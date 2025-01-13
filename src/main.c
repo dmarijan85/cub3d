@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/10 19:55:42 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/01/13 14:30:39 by dmarijan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,16 @@ void	die(char *errmsg, t_square *sq)
 	exit(1);
 }
 
-int	isnowe(char c)
+int	isemptyline(char *str)
 {
-	if (c == 'N' || c == 'O' || c == 'W' || 
+	int	i;
+
+	i = 0;
+	while (str[i] && ft_isspace(str[i]))
+		i++;
+	if (!str[i])
+		return (1);
+	return (0);
 }
 
 //parser
@@ -37,94 +44,107 @@ int	veggietales(char **argv, t_square *sq)
 	char	*str;
 	int		i;
 
-	i = 0;
+	i = 1;
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		die("Map can't be opened (doesn't exist / check permissions)!");
-	while (fd)
+		die("Map can't be opened (doesn't exist / check permissions)!", sq, fd);
+	while (i)
 	{
 		str = get_next_line(fd);
 		if (!str)
-			;//root_destroy(root, "map_init(): read()", errno);
+			i = 0;
 		else
 		{
-			while (*str == ' ')
-				str++;
-			if (!ft_strncmp(str, "F " , 2))
-			{
-				str++;
-				while (*str == ' ')
-					str++;
-				while ((ft_isnum(*str) || *str == ',') && i < 3)
-				{
-					while (ft_isnum(*str))
-					{
-						sq->fc[i] *= 10;
-						sq->fc[i] += *str - '0';
-						str++;
-					}
-					str++;
-					if (sq->fc[i] < 0 || sq->fc[i] > 255)
-						die("Illegal floor RGB! (Should be [0,255])", sq)
-					i++;
-				}
-			}
-			else if (!ft_strncmp(str, "C " , 2))
-			{
-				str++;
-				while (*str == ' ')
-					str++;
-				while ((ft_isnum(*str) || *str == ',') && i < 3)
-				{
-					while (ft_isnum(*str))
-					{
-						sq->cc[i] *= 10;
-						sq->cc[i] += *str - '0';
-						str++;
-					}
-					str++;
-					if (sq->cc[i] < 0 || sq->cc[i] > 255)
-						die("Illegal ceiling RGB! (Should be [0,255])", sq)
-					i++;
-				}
-			}
-			else if (!ft_strncmp(str, "NO ", 3))
-			{
-				str += 2;
-				while (*str == ' ')
-					str++;
-				sq->no = ft_substr(str, 0, ft_strlen(str));
-			}
-			else if (!ft_strncmp(str, "WE ", 3))
-			{
-				str += 2;
-				while (*str == ' ')
-					str++;
-				sq->we = ft_substr(str, 0, ft_strlen(str));
-			}
-			else if (!ft_strncmp(str, "EA ", 3))
-			{
-				str += 2;
-				while (*str == ' ')
-					str++;
-				sq->ea = ft_substr(str, 0, ft_strlen(str));
-			}
-			else if (!ft_strncmp(str, "SO ", 3))
-			{
-				str += 2;
-				while (*str == ' ')
-					str++;
-				sq->so = ft_substr(str, 0, ft_strlen(str));
-			}
+			if (isemptyline(str))
+				free(str);
 			else
-				die("Don't put illegal shit in my map file you dumb cunt", sq);
+			{
+				if (sq->infonumber == 6)
+					compute_map(str, sq);
+				else
+				{
+					while (*str == ' ')
+						str++;
+					if (!ft_strncmp(str, "F " , 2))
+					{
+						str++;
+						while (*str == ' ')
+							str++;
+						while ((ft_isnum(*str) || *str == ',') && i < 3)
+						{
+							while (ft_isnum(*str))
+							{
+								sq->fc[i] *= 10;
+								sq->fc[i] += *str - '0';
+								str++;
+							}
+							str++;
+							if (sq->fc[i] < 0 || sq->fc[i] > 255)
+								die("Illegal floor RGB! (Should be [0,255])", sq, fd);
+							i++;
+						}
+						sq->infonumber++;
+					}
+					else if (!ft_strncmp(str, "C " , 2))
+					{
+						str++;
+						while (*str == ' ')
+							str++;
+						while ((ft_isnum(*str) || *str == ',') && i < 3)
+						{
+							while (ft_isnum(*str))
+							{
+								sq->cc[i] *= 10;
+								sq->cc[i] += *str - '0';
+								str++;
+							}
+							str++;
+							if (sq->cc[i] < 0 || sq->cc[i] > 255)
+								die("Illegal ceiling RGB! (Should be [0,255])", sq, fd);
+							i++;
+						}
+						sq->infonumber++;
+					}
+					else if (!ft_strncmp(str, "NO ", 3))
+					{
+						str += 2;
+						while (*str == ' ')
+							str++;
+						sq->no = ft_substr(str, 0, ft_strlen(str));
+						sq->infonumber++;
+					}
+					else if (!ft_strncmp(str, "WE ", 3))
+					{
+						str += 2;
+						while (*str == ' ')
+							str++;
+						sq->we = ft_substr(str, 0, ft_strlen(str));
+						sq->infonumber++;
+					}
+					else if (!ft_strncmp(str, "EA ", 3))
+					{
+						str += 2;
+						while (*str == ' ')
+							str++;
+						sq->ea = ft_substr(str, 0, ft_strlen(str));
+						sq->infonumber++;
+					}
+					else if (!ft_strncmp(str, "SO ", 3))
+					{
+						str += 2;
+						while (*str == ' ')
+							str++;
+						sq->so = ft_substr(str, 0, ft_strlen(str));
+						sq->infonumber++;
+					}
+					else
+						die("Don't put illegal shit in my map file you dumb cunt", sq, fd);
+					free(str);
+				}
+			}
 		}
-		free(str);
-
 	}
-	//there has to be a valid map after everything else
-	//if first char is a 1, say its good and keep going
-
+	close (fd);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/10 19:15:50 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/01/13 14:12:08 by dmarijan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@
 # include "libs/MLX42/include/MLX42/MLX42.h"
 # include "libs/MLX42/include/MLX42/MLX42_Int.h"
 
+typedef struct s_coord
+{
+	int				x;
+	int				y;
+}				t_coord;
+
 typedef struct s_square
 {
 	char	*no;
@@ -33,6 +39,8 @@ typedef struct s_square
 	int		fc[3];
 	int		cc[3];
 	char	**map;
+	int		mapdepth;
+	int		infonumber;
 }				t_square;
 
 
