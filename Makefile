@@ -6,7 +6,7 @@
 #    By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/10 14:39:35 by mclaver-          #+#    #+#              #
-#    Updated: 2025/01/10 18:42:32 by dmarijan         ###   ########.fr        #
+#    Updated: 2025/01/17 14:10:48 by dmarijan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,17 +22,8 @@ INCLUDE_DIRS = -I. -I$(LIBFT_DIR) -I$(MLX42_DIR)/include
 
 # Source Files
 SRC_FILES = src/main.c			\
-			src/root.c			\
-			src/game.c			\
-			src/map_init.c		\
-			src/map_read.c		\
-			src/map_is_valid.c	\
-			src/map_parsing.c	\
-			src/floodfill.c		\
-			src/draw.c			\
-			src/event.c			\
-			src/update.c		\
-			src/move_player.c
+			src/waterbucket.c	\
+			src/minecraft.c
 
 OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

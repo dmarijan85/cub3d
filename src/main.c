@@ -6,14 +6,14 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/13 14:30:39 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/01/17 14:11:52 by dmarijan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 //errexit
-void	die(char *errmsg, t_square *sq)
+void	die(char *errmsg, t_square *sq, int fd)
 {
 	if (errmsg)
 	{
@@ -22,7 +22,45 @@ void	die(char *errmsg, t_square *sq)
 		ft_putstr_fd("\n", 2);
 	}
 	//free the square
+	(void)sq;
+	if (fd)
+		close(fd);
 	exit(1);
+}
+
+char	*get_free(char **str)
+{
+	if (str && *str)
+	{
+		free(*str);
+		*str = NULL;
+	}
+	return (NULL);
+}
+
+void	array_free(char **str)
+{
+	int	i;
+
+	i = 0;
+	if (str)
+	{
+		while (str[i])
+		{
+			get_free(&str[i]);
+			i++;
+		}
+		if (str)
+			free(str);
+	}
+	str = NULL;
+}
+
+int		ft_isspace(char c)
+{
+	if (c == ' ' || c == '\t')
+		return (1);
+	return (0);
 }
 
 int	isemptyline(char *str)
@@ -35,6 +73,53 @@ int	isemptyline(char *str)
 	if (!str[i])
 		return (1);
 	return (0);
+}
+
+int		ft_size(char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+		i++;
+	return (i);
+}
+
+void	extend_map(char *str, t_square *sq)
+{
+	int		i;
+	char	**newmap;
+
+	i = 0;
+	newmap = malloc(ft_size(sq->map) + 2 * sizeof(char *));
+	while (sq->map[i])
+	{
+		newmap[i] = ft_strdup(sq->map[i]);
+		i++;
+	}
+	array_free(sq->map);
+	newmap[i] = str;
+	newmap[i + 1] = NULL;
+	sq->map = newmap;
+}
+
+void	compute_map(char *str, t_square *sq, int fd)
+{
+	int		i;
+	bool	flag;
+
+	flag = false;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '0' || str[i] == '1')
+			flag = true;
+		i++;
+	}
+	if (flag)
+		extend_map(str, sq);
+	else
+		die("No map present in file?!", sq, fd);
 }
 
 //parser
@@ -60,7 +145,7 @@ int	veggietales(char **argv, t_square *sq)
 			else
 			{
 				if (sq->infonumber == 6)
-					compute_map(str, sq);
+					compute_map(str, sq, fd);
 				else
 				{
 					while (*str == ' ')
@@ -70,9 +155,9 @@ int	veggietales(char **argv, t_square *sq)
 						str++;
 						while (*str == ' ')
 							str++;
-						while ((ft_isnum(*str) || *str == ',') && i < 3)
+						while ((ft_isalnum(*str) || *str == ',') && i < 3)
 						{
-							while (ft_isnum(*str))
+							while (ft_isalnum(*str))
 							{
 								sq->fc[i] *= 10;
 								sq->fc[i] += *str - '0';
@@ -90,9 +175,9 @@ int	veggietales(char **argv, t_square *sq)
 						str++;
 						while (*str == ' ')
 							str++;
-						while ((ft_isnum(*str) || *str == ',') && i < 3)
+						while ((ft_isalnum(*str) || *str == ',') && i < 3)
 						{
-							while (ft_isnum(*str))
+							while (ft_isalnum(*str))
 							{
 								sq->cc[i] *= 10;
 								sq->cc[i] += *str - '0';
@@ -165,11 +250,14 @@ int	iscub(char *file)
 
 int	main(int argc, char **argv)
 {
-	t_square	*sq;
+	t_square	sq;
 
+	minecraft(&sq);
 	if (argc != 2)
-		die("Invalid number of arguments", sq);
+		die("Invalid number of arguments", &sq, 0);
 	if (iscub(argv[1]) == 0)
-		die("Invalid argument (<name>.cub)", sq);
-	veggietales(argv, sq);
+		die("Invalid argument (<name>.cub)", &sq, 0);
+	sq.map = malloc(1 * sizeof(char *));
+	sq.map[0] = NULL;
+	veggietales(argv, &sq);
 }
