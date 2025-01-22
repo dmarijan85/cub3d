@@ -6,37 +6,11 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/17 14:11:52 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:36:23 by SET YOUR USER    ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-//errexit
-void	die(char *errmsg, t_square *sq, int fd)
-{
-	if (errmsg)
-	{
-		ft_putstr_fd("Error\n", 2);
-		ft_putstr_fd(errmsg, 2);
-		ft_putstr_fd("\n", 2);
-	}
-	//free the square
-	(void)sq;
-	if (fd)
-		close(fd);
-	exit(1);
-}
-
-char	*get_free(char **str)
-{
-	if (str && *str)
-	{
-		free(*str);
-		*str = NULL;
-	}
-	return (NULL);
-}
 
 void	array_free(char **str)
 {
@@ -47,6 +21,7 @@ void	array_free(char **str)
 	{
 		while (str[i])
 		{
+			ft_printf("%s\n",str[i]);
 			get_free(&str[i]);
 			i++;
 		}
@@ -56,9 +31,38 @@ void	array_free(char **str)
 	str = NULL;
 }
 
+//errexit
+void	die(char *errmsg, t_square *sq, int fd)
+{
+	int	i = 0;
+	if (errmsg)
+	{
+		ft_putstr_fd("Error\n", 2);
+		ft_putstr_fd(errmsg, 2);
+		ft_putstr_fd("\n", 2);
+	}
+	//free the square
+	ft_printf("NO:%s, WE:%s, SO:%s, EA:%s\n", sq->no, sq->we, sq->so, sq->ea);
+	while (i < 3)
+	{
+		ft_printf("CC[%i]:%i, FC[%i]:%i\n", i, sq->cc[i], i, sq->fc[i]);
+		i++;
+	}
+	free(sq->no);
+	free(sq->ea);
+	free(sq->we);
+	free(sq->so);
+	if (sq->gnl)
+		get_free(&sq->gnl);
+	array_free(sq->map);
+	if (fd)
+		close(fd);
+	exit(1);
+}
+
 int		ft_isspace(char c)
 {
-	if (c == ' ' || c == '\t')
+	if (c == ' ' || c == '\t' || c == '\n')
 		return (1);
 	return (0);
 }
@@ -80,7 +84,7 @@ int		ft_size(char **map)
 	int	i;
 
 	i = 0;
-	while (map[i])
+	while (map[i] && map[i][0])
 		i++;
 	return (i);
 }
@@ -91,7 +95,7 @@ void	extend_map(char *str, t_square *sq)
 	char	**newmap;
 
 	i = 0;
-	newmap = malloc(ft_size(sq->map) + 2 * sizeof(char *));
+	newmap = malloc((ft_size(sq->map) + 2) * sizeof(char *));
 	while (sq->map[i])
 	{
 		newmap[i] = ft_strdup(sq->map[i]);
@@ -103,21 +107,27 @@ void	extend_map(char *str, t_square *sq)
 	sq->map = newmap;
 }
 
+//that weird tmp - 1 size is for the last newline that gnl returns and we dont want
 void	compute_map(char *str, t_square *sq, int fd)
 {
 	int		i;
 	bool	flag;
+	char	*tmp;
 
 	flag = false;
 	i = 0;
-	while (str[i])
+	tmp = malloc((ft_strlen(str) - 1) * sizeof(char));
+	tmp[0] = '\0';
+	ft_strlcat(tmp, str, ft_strlen(str) - 1);
+	free(str);
+	while (tmp[i])
 	{
-		if (str[i] == '0' || str[i] == '1')
+		if (tmp[i] == '0' || tmp[i] == '1')
 			flag = true;
 		i++;
 	}
 	if (flag)
-		extend_map(str, sq);
+		extend_map(tmp, sq);
 	else
 		die("No map present in file?!", sq, fd);
 }
@@ -128,32 +138,35 @@ int	veggietales(char **argv, t_square *sq)
 	int		fd;
 	char	*str;
 	int		i;
+	bool	flag;
 
-	i = 1;
+	flag = true;
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		die("Map can't be opened (doesn't exist / check permissions)!", sq, fd);
-	while (i)
+	while (flag)
 	{
+		i = 0;
 		str = get_next_line(fd);
+		sq->gnl = str;
 		if (!str)
-			i = 0;
+			flag = false;
 		else
 		{
 			if (isemptyline(str))
-				free(str);
+				get_free(&sq->gnl);
 			else
 			{
 				if (sq->infonumber == 6)
 					compute_map(str, sq, fd);
 				else
 				{
-					while (*str == ' ')
+					while (ft_isspace(*str))
 						str++;
 					if (!ft_strncmp(str, "F " , 2))
 					{
 						str++;
-						while (*str == ' ')
+						while (ft_isspace(*str))
 							str++;
 						while ((ft_isalnum(*str) || *str == ',') && i < 3)
 						{
@@ -173,7 +186,7 @@ int	veggietales(char **argv, t_square *sq)
 					else if (!ft_strncmp(str, "C " , 2))
 					{
 						str++;
-						while (*str == ' ')
+						while (ft_isspace(*str))
 							str++;
 						while ((ft_isalnum(*str) || *str == ',') && i < 3)
 						{
@@ -190,41 +203,41 @@ int	veggietales(char **argv, t_square *sq)
 						}
 						sq->infonumber++;
 					}
-					else if (!ft_strncmp(str, "NO ", 3))
+					else if (!ft_strncmp(str, "NO ", 3) || !ft_strncmp(str, "NO\t", 3))
 					{
 						str += 2;
-						while (*str == ' ')
+						while (ft_isspace(*str))
 							str++;
 						sq->no = ft_substr(str, 0, ft_strlen(str));
 						sq->infonumber++;
 					}
-					else if (!ft_strncmp(str, "WE ", 3))
+					else if (!ft_strncmp(str, "WE ", 3) || !ft_strncmp(str, "WE\t", 3))
 					{
 						str += 2;
-						while (*str == ' ')
+						while (ft_isspace(*str))
 							str++;
 						sq->we = ft_substr(str, 0, ft_strlen(str));
 						sq->infonumber++;
 					}
-					else if (!ft_strncmp(str, "EA ", 3))
+					else if (!ft_strncmp(str, "EA ", 3) || !ft_strncmp(str, "EA\t", 3))
 					{
 						str += 2;
-						while (*str == ' ')
+						while (ft_isspace(*str))
 							str++;
 						sq->ea = ft_substr(str, 0, ft_strlen(str));
 						sq->infonumber++;
 					}
-					else if (!ft_strncmp(str, "SO ", 3))
+					else if (!ft_strncmp(str, "SO ", 3) || !ft_strncmp(str, "S\t", 3))
 					{
 						str += 2;
-						while (*str == ' ')
+						while (ft_isspace(*str))
 							str++;
 						sq->so = ft_substr(str, 0, ft_strlen(str));
 						sq->infonumber++;
 					}
 					else
 						die("Don't put illegal shit in my map file you dumb cunt", sq, fd);
-					free(str);
+					get_free(&sq->gnl);
 				}
 			}
 		}
@@ -247,6 +260,62 @@ int	iscub(char *file)
 	return (1);
 }
 
+int	get_longest_line(char **map)
+{
+	int	longest;
+	int	i;
+
+	i = 0;
+	longest = 0;
+	while (map[i])
+	{
+		if ((int)ft_strlen(map[i]) > longest)
+			longest = ft_strlen(map[i]);
+		i++;
+	}
+	return (longest);
+}
+
+void	check_replace(char *line, int longest, t_square *sq, int pos)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	if ((int)ft_strlen(line) < longest)
+	{
+		tmp = malloc((longest + 1) * sizeof(char));
+		if (!tmp)
+			die("Malloc fail", sq, 0);
+		while (i < (int)ft_strlen(line))
+		{
+			tmp[i] = line[i];
+			i++;
+		}
+		while (i < longest)
+		{
+			tmp[i] = ' ';
+			i++;
+		}
+		tmp[i] = '\0';
+		free(line);
+		sq->map[pos] = tmp;
+	}
+}
+
+void	mapdeluxe(t_square *sq)
+{
+	int	longest;
+	int	i;
+
+	i = 0;
+	longest = get_longest_line(sq->map);
+	while (sq->map[i])
+	{
+		check_replace(sq->map[i], longest, sq, i);
+		i++;
+	}
+}
 
 int	main(int argc, char **argv)
 {
@@ -260,4 +329,6 @@ int	main(int argc, char **argv)
 	sq.map = malloc(1 * sizeof(char *));
 	sq.map[0] = NULL;
 	veggietales(argv, &sq);
+	mapdeluxe(&sq);
+	die("Program finished", &sq, 0);
 }

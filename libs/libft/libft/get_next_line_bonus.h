@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mclaver- <mclaver-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: dmarijan <dmarijan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/05 13:52:58 by mclaver-          #+#    #+#             */
-/*   Updated: 2024/07/03 13:54:12 by mclaver-         ###   ########.fr       */
+/*   Created: 2024/02/15 12:31:11 by dmarijan          #+#    #+#             */
+/*   Updated: 2025/01/22 13:33:56 by dmarijan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
-# include <unistd.h>
-# include <stdlib.h>
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 10
 # endif
 
+# include <unistd.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include <stdlib.h>
+
 char	*get_next_line(int fd);
-char	*ft_free(char **buffer);
+char	*get_strjoin(char *dst, char *src);
+size_t	get_strlen(char *str);
+int		get_strchr(char *s, int c);
+char	*get_calloc(size_t count, size_t size);
+char	*get_free(char **str);
+int		get_nlines_fd(char *mappath);
 
 #endif

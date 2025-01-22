@@ -6,7 +6,7 @@
 /*   By: mclaver- <mclaver-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:09:33 by mclaver-          #+#    #+#             */
-/*   Updated: 2024/01/20 18:45:36 by mclaver-         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:35:03 by dmarijan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
-	while (s[i] != '\0')
+	while (s && s[i] != '\0')
 		i++;
 	return (i);
 }

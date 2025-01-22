@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/17 14:13:27 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/01/22 12:55:09 by SET YOUR USER    ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <errno.h>
-# include "libs/libft/ft_printf.h"
-# include "libs/MLX42/include/MLX42/MLX42.h"
-# include "libs/MLX42/include/MLX42/MLX42_Int.h"
+# include "../libs/libft/ft_printf.h"
+# include "../libs/MLX42/include/MLX42/MLX42.h"
 
 typedef struct s_coord
 {
@@ -39,6 +38,7 @@ typedef struct s_square
 	int		fc[3];
 	int		cc[3];
 	char	**map;
+	char	*gnl;
 	int		mapdepth;
 	int		infonumber;
 }				t_square;
