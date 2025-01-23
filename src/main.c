@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/22 14:36:23 by SET YOUR USER    ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/23 15:10:44 by SET YOUR USER    ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,9 @@ void	compute_map(char *str, t_square *sq, int fd)
 
 	flag = false;
 	i = 0;
-	tmp = malloc((ft_strlen(str) - 1) * sizeof(char));
+	tmp = malloc((ft_strlen(str)) * sizeof(char));
 	tmp[0] = '\0';
-	ft_strlcat(tmp, str, ft_strlen(str) - 1);
+	ft_strlcat(tmp, str, ft_strlen(str));
 	free(str);
 	while (tmp[i])
 	{
@@ -138,111 +138,112 @@ int	veggietales(char **argv, t_square *sq)
 	int		fd;
 	char	*str;
 	int		i;
-	bool	flag;
 
-	flag = true;
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		die("Map can't be opened (doesn't exist / check permissions)!", sq, fd);
-	while (flag)
+	while (42)
 	{
 		i = 0;
 		str = get_next_line(fd);
 		sq->gnl = str;
 		if (!str)
-			flag = false;
+		{
+			if (sq->infonumber != 6)
+				die ("Scoundrel! The map is fucking missing shit bro!!!", sq, fd);
+			close(fd);
+			return (0);
+		}
+		if (isemptyline(str))
+			get_free(&sq->gnl);
 		else
 		{
-			if (isemptyline(str))
-				get_free(&sq->gnl);
+			if (sq->infonumber == 6)
+				compute_map(str, sq, fd);
 			else
 			{
-				if (sq->infonumber == 6)
-					compute_map(str, sq, fd);
-				else
+				while (ft_isspace(*str))
+					str++;
+				if (!ft_strncmp(str, "F " , 2) || !ft_strncmp(str, "F\t", 2))
 				{
+					str++;
 					while (ft_isspace(*str))
 						str++;
-					if (!ft_strncmp(str, "F " , 2))
+					while ((ft_isalnum(*str) || *str == ',') && i < 3)
 					{
-						str++;
-						while (ft_isspace(*str))
-							str++;
-						while ((ft_isalnum(*str) || *str == ',') && i < 3)
+						while (ft_isalnum(*str))
 						{
-							while (ft_isalnum(*str))
-							{
-								sq->fc[i] *= 10;
-								sq->fc[i] += *str - '0';
-								str++;
-							}
+							sq->fc[i] *= 10;
+							sq->fc[i] += *str - '0';
 							str++;
-							if (sq->fc[i] < 0 || sq->fc[i] > 255)
-								die("Illegal floor RGB! (Should be [0,255])", sq, fd);
-							i++;
 						}
-						sq->infonumber++;
-					}
-					else if (!ft_strncmp(str, "C " , 2))
-					{
 						str++;
-						while (ft_isspace(*str))
-							str++;
-						while ((ft_isalnum(*str) || *str == ',') && i < 3)
-						{
-							while (ft_isalnum(*str))
-							{
-								sq->cc[i] *= 10;
-								sq->cc[i] += *str - '0';
-								str++;
-							}
-							str++;
-							if (sq->cc[i] < 0 || sq->cc[i] > 255)
-								die("Illegal ceiling RGB! (Should be [0,255])", sq, fd);
-							i++;
-						}
-						sq->infonumber++;
+						if (sq->fc[i] < 0 || sq->fc[i] > 255)
+							die("Illegal floor RGB! (Should [0,255])", sq, fd);
+						i++;
 					}
-					else if (!ft_strncmp(str, "NO ", 3) || !ft_strncmp(str, "NO\t", 3))
-					{
-						str += 2;
-						while (ft_isspace(*str))
-							str++;
-						sq->no = ft_substr(str, 0, ft_strlen(str));
-						sq->infonumber++;
-					}
-					else if (!ft_strncmp(str, "WE ", 3) || !ft_strncmp(str, "WE\t", 3))
-					{
-						str += 2;
-						while (ft_isspace(*str))
-							str++;
-						sq->we = ft_substr(str, 0, ft_strlen(str));
-						sq->infonumber++;
-					}
-					else if (!ft_strncmp(str, "EA ", 3) || !ft_strncmp(str, "EA\t", 3))
-					{
-						str += 2;
-						while (ft_isspace(*str))
-							str++;
-						sq->ea = ft_substr(str, 0, ft_strlen(str));
-						sq->infonumber++;
-					}
-					else if (!ft_strncmp(str, "SO ", 3) || !ft_strncmp(str, "S\t", 3))
-					{
-						str += 2;
-						while (ft_isspace(*str))
-							str++;
-						sq->so = ft_substr(str, 0, ft_strlen(str));
-						sq->infonumber++;
-					}
-					else
-						die("Don't put illegal shit in my map file you dumb cunt", sq, fd);
-					get_free(&sq->gnl);
+					sq->infonumber++;
 				}
+				else if (!ft_strncmp(str, "C " , 2) || !ft_strncmp(str, "C\t", 2))
+				{
+					str++;
+					while (ft_isspace(*str))
+						str++;
+					while ((ft_isalnum(*str) || *str == ',') && i < 3)
+					{
+						while (ft_isalnum(*str))
+						{
+							sq->cc[i] *= 10;
+							sq->cc[i] += *str - '0';
+							str++;
+						}
+						str++;
+						if (sq->cc[i] < 0 || sq->cc[i] > 255)
+							die("Illegal ceiling RGB! (Should be [0,255])", sq, fd);
+						i++;
+					}
+					sq->infonumber++;
+				}
+				else if (!ft_strncmp(str, "NO ", 3) || !ft_strncmp(str, "NO\t", 3))
+				{
+					str += 2;
+					while (ft_isspace(*str))
+						str++;
+					sq->no = ft_substr(str, 0, ft_strlen(str));
+					if (!isemptyline(sq->no))
+						sq->infonumber++;
+				}
+				else if (!ft_strncmp(str, "WE ", 3) || !ft_strncmp(str, "WE\t", 3))
+				{
+					str += 2;
+					while (ft_isspace(*str))
+						str++;
+					sq->we = ft_substr(str, 0, ft_strlen(str));
+					if (!isemptyline(sq->we))
+						sq->infonumber++;
+				}
+				else if (!ft_strncmp(str, "EA ", 3) || !ft_strncmp(str, "EA\t", 3))
+				{
+					str += 2;
+					while (ft_isspace(*str))
+						str++;
+					sq->ea = ft_substr(str, 0, ft_strlen(str));
+					if (!isemptyline(sq->ea))
+						sq->infonumber++;
+				}
+				else if (!ft_strncmp(str, "SO ", 3) || !ft_strncmp(str, "S\t", 3))
+				{
+					str += 2;
+					while (ft_isspace(*str))
+						str++;
+					sq->so = ft_substr(str, 0, ft_strlen(str));
+					if (!isemptyline(sq->so))
+						sq->infonumber++;
+				}
+				get_free(&sq->gnl);
 			}
 		}
 	}
-	close (fd);
 	return (0);
 }
 
@@ -303,18 +304,57 @@ void	check_replace(char *line, int longest, t_square *sq, int pos)
 	}
 }
 
+void	waterbucket(t_square *sq, int x, int y)
+{
+	t_coord player;
+	char	**tmp;
+	int		i;
+
+	if (!sq->map || !*sq->map)
+		die("Holy shit where is the map buddy?!?!", sq, 0);
+	i = 0;
+	player.x = x;
+	player.y = y;
+	tmp = malloc((ft_size(sq->map) + 1) * sizeof(char *));
+	while (i < ft_size(sq->map))
+	{
+		tmp[i] = ft_strdup(sq->map[i]);
+		i++;
+	}
+	tmp[i] = NULL;
+	if (flood_fill(sq, tmp, player))
+	{
+		array_free(tmp);
+		die("Holy shit lois the map is illegal as fuck bro", sq, 0);
+	}
+	array_free(tmp);
+}
+
 void	mapdeluxe(t_square *sq)
 {
 	int	longest;
 	int	i;
+	int	j;
 
 	i = 0;
+	j = 0;
 	longest = get_longest_line(sq->map);
 	while (sq->map[i])
 	{
 		check_replace(sq->map[i], longest, sq, i);
 		i++;
 	}
+	i = 0;
+	while (sq->map[i] && sq->map[i][j] != '0')
+	{
+		j = 0;
+		while (sq->map[i][j] && sq->map[i][j] != '0')
+			j++;
+	  	if (sq->map[i][j] == '0')
+			break ;
+		i++;
+	}
+	waterbucket(sq, j, i);
 }
 
 int	main(int argc, char **argv)

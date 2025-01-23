@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/22 12:55:09 by SET YOUR USER    ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/23 14:05:35 by SET YOUR USER    ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ typedef struct s_square
 void	minecraft(t_square *sq);
 int		ft_isspace(char c);
 int		flood_fill(t_square *sq, char **map, t_coord player);
+int		ft_size(char **map);
 
 #endif
