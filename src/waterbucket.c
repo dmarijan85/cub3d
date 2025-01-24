@@ -6,7 +6,7 @@
 /*   By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:25:49 by mclaver-          #+#    #+#             */
-/*   Updated: 2025/01/23 14:33:30 by SET YOUR USER    ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/24 12:22:49 by SET YOUR USER    ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,26 @@ static int	flood_left(t_square *sq, char **map, t_coord player)
 	return (0);
 }
 
+int	isokay(t_square *sq, char c)
+{
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == '0' || c == '1')
+	{
+		if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		{
+			sq->pnbr++;
+			sq->player = c;
+		}
+		return (1);
+	}
+	return (0);
+}
+
 int	flood_fill(t_square *sq, char **map, t_coord player)
 {
-	map[player.y][player.x] = '1';
+	if (isokay(sq, map[player.y][player.x]))
+		map[player.y][player.x] = '1';
+	else
+		return (1);
 	if (flood_down(sq, map, player) == 1)
 		return (1);
 	if (flood_up(sq, map, player) == 1)

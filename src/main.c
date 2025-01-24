@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/23 15:10:44 by SET YOUR USER    ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/24 12:24:45 by SET YOUR USER    ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,7 +322,7 @@ void	waterbucket(t_square *sq, int x, int y)
 		i++;
 	}
 	tmp[i] = NULL;
-	if (flood_fill(sq, tmp, player))
+	if (flood_fill(sq, tmp, player) || !sq->player || sq->pnbr != 1)
 	{
 		array_free(tmp);
 		die("Holy shit lois the map is illegal as fuck bro", sq, 0);
