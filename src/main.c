@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/24 12:24:45 by SET YOUR USER    ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/24 12:50:12 by SET YOUR USER    ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,6 +354,8 @@ void	mapdeluxe(t_square *sq)
 			break ;
 		i++;
 	}
+	if (!sq->map[i] || !sq->map[i][j])
+		die("Holy shit lois this map doesnt even have a single floor!", sq, 0);
 	waterbucket(sq, j, i);
 }
 
