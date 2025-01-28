@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/24 12:50:12 by SET YOUR USER    ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/28 13:12:15 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	array_free(char **str)
 	{
 		while (str[i])
 		{
-			ft_printf("%s\n",str[i]);
+			ft_printf("%s\n", str[i]);
 			get_free(&str[i]);
 			i++;
 		}
@@ -34,14 +34,15 @@ void	array_free(char **str)
 //errexit
 void	die(char *errmsg, t_square *sq, int fd)
 {
-	int	i = 0;
+	int	i;
+
+	i = 0;
 	if (errmsg)
 	{
 		ft_putstr_fd("Error\n", 2);
 		ft_putstr_fd(errmsg, 2);
 		ft_putstr_fd("\n", 2);
 	}
-	//free the square
 	ft_printf("NO:%s, WE:%s, SO:%s, EA:%s\n", sq->no, sq->we, sq->so, sq->ea);
 	while (i < 3)
 	{
@@ -60,7 +61,7 @@ void	die(char *errmsg, t_square *sq, int fd)
 	exit(1);
 }
 
-int		ft_isspace(char c)
+int	ft_isspace(char c)
 {
 	if (c == ' ' || c == '\t' || c == '\n')
 		return (1);
@@ -79,7 +80,7 @@ int	isemptyline(char *str)
 	return (0);
 }
 
-int		ft_size(char **map)
+int	ft_size(char **map)
 {
 	int	i;
 
@@ -107,7 +108,7 @@ void	extend_map(char *str, t_square *sq)
 	sq->map = newmap;
 }
 
-//that weird tmp - 1 size is for the last newline that gnl returns and we dont want
+/*that weird tmp - 1 size is for newline that gnl returns*/
 void	compute_map(char *str, t_square *sq, int fd)
 {
 	int		i;
@@ -164,7 +165,7 @@ int	veggietales(char **argv, t_square *sq)
 			{
 				while (ft_isspace(*str))
 					str++;
-				if (!ft_strncmp(str, "F " , 2) || !ft_strncmp(str, "F\t", 2))
+				if (!ft_strncmp(str, "F ", 2) || !ft_strncmp(str, "F\t", 2))
 				{
 					str++;
 					while (ft_isspace(*str))
@@ -306,7 +307,7 @@ void	check_replace(char *line, int longest, t_square *sq, int pos)
 
 void	waterbucket(t_square *sq, int x, int y)
 {
-	t_coord player;
+	t_coord	player;
 	char	**tmp;
 	int		i;
 
@@ -350,7 +351,7 @@ void	mapdeluxe(t_square *sq)
 		j = 0;
 		while (sq->map[i][j] && sq->map[i][j] != '0')
 			j++;
-	  	if (sq->map[i][j] == '0')
+		if (sq->map[i][j] == '0')
 			break ;
 		i++;
 	}
@@ -362,6 +363,7 @@ void	mapdeluxe(t_square *sq)
 int	main(int argc, char **argv)
 {
 	t_square	sq;
+	mlx_t		*window;
 
 	minecraft(&sq);
 	if (argc != 2)
@@ -372,5 +374,10 @@ int	main(int argc, char **argv)
 	sq.map[0] = NULL;
 	veggietales(argv, &sq);
 	mapdeluxe(&sq);
+	window = mlx_init(1920, 1080, "cub3d", false);
+	if (!window)
+		die("Window blew up...", &sq, 0);
+	mlx_loop(window);
+	mlx_terminate(window);
 	die("Program finished", &sq, 0);
 }
