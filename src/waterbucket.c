@@ -6,7 +6,7 @@
 /*   By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:25:49 by mclaver-          #+#    #+#             */
-/*   Updated: 2025/01/24 12:46:05 by SET YOUR USER    ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/29 19:59:37 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static int	flood_left(t_square *sq, char **map, t_coord player)
 	return (0);
 }
 
-int	isokay(t_square *sq, char c)
+int	isokay(t_square *sq, char c, t_coord player)
 {
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == '0' || c == '1')
 	{
@@ -92,6 +92,15 @@ int	isokay(t_square *sq, char c)
 		{
 			sq->pnbr += 1;
 			sq->player = c;
+			if (sq->player == 'E')
+				sq->centerangle = 0;
+			else if (sq->player == 'N')
+				sq->centerangle = 90;
+			else if (sq->player == 'W')
+				sq->centerangle = 180;
+			else if (sq->player == 'S')
+				sq->centerangle = 270;
+			sq->pcoord = player;
 		}
 		return (1);
 	}
@@ -100,7 +109,7 @@ int	isokay(t_square *sq, char c)
 
 int	flood_fill(t_square *sq, char **map, t_coord player)
 {
-	if (!isokay(sq, map[player.y][player.x]))
+	if (!isokay(sq, map[player.y][player.x], player))
 		return (1);
 	map[player.y][player.x] = '1';
 	if (flood_down(sq, map, player) == 1)

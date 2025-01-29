@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/24 12:22:32 by SET YOUR USER    ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/29 20:29:09 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ typedef struct s_square
 	int		mapdepth;
 	int		infonumber;
 	char	player;
+	t_coord	pcoord;
+	float	centerangle;
 	int		pnbr;
+	float	*cone;
 }				t_square;
 
 void	minecraft(t_square *sq);
