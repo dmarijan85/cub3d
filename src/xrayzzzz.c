@@ -85,14 +85,14 @@ float	zeus(t_square *sq, int angle)
 		else if (angle > 180 && angle < 360)
 			y += absf(slope * step);
 		if (slope == 0)
-			y -= step;
+			y -= step
 		printf("stepped at\nx: %f\ny: %f\nit is: %c\n\n", x, y, sq->map[(int)y][(int)x]);
 		if ((int)y < 0)
 			y = 0;
 		if ((int)x < 0)
 			x = 0;
 		if (sq->map[(int)y][(int)x] == '1')
-			return (sqrt(abspwr(absf(x + 1) - sq->pcoord.x) + abspwr(absf(y + 1) - sq->pcoord.y)));
+			return (sqrt(abspwr(absf(x) - sq->pcoord.x) + abspwr(absf(y) - sq->pcoord.y)));
 		//este el el calculo que sospecho ^
 	}
 	return (-1);
