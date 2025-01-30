@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/29 20:29:09 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/30 14:06:15 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <errno.h>
 # include "../libs/libft/ft_printf.h"
 # include "../libs/MLX42/include/MLX42/MLX42.h"
+
+# define PI 3.14159265358979323846
 
 typedef struct s_coord
 {
@@ -52,5 +54,6 @@ void	minecraft(t_square *sq);
 int		ft_isspace(char c);
 int		flood_fill(t_square *sq, char **map, t_coord player);
 int		ft_size(char **map);
+void	xrayingit(t_square *sq);
 
 #endif

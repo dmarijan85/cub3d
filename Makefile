@@ -6,7 +6,7 @@
 #    By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/10 14:39:35 by mclaver-          #+#    #+#              #
-#    Updated: 2025/01/28 13:11:38 by dmarijan         ###   ########.fr        #
+#    Updated: 2025/01/30 14:32:30 by dmarijan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ INCLUDE_DIRS = -I. -I$(LIBFT_DIR) -I$(MLX42_DIR)/include
 # Source Files
 SRC_FILES = src/main.c			\
 			src/waterbucket.c	\
-			src/minecraft.c
+			src/minecraft.c		\
+			src/xrayzzzz.c
 
 OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -34,7 +35,7 @@ MLX42 = build/libmlx42.a
 # Compiler and flags
 CC = gcc
 MLXFLAGS = -Ilibs/MLX42/include -ldl -lglfw -pthread -lm
-CFLAGS = -Wall -Wextra -Werror -no-pie -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -no-pie -g #-fsanitize=address
 
 # Rules
 all: $(NAME)

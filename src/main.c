@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/28 13:12:15 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/30 14:34:46 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,7 +363,7 @@ void	mapdeluxe(t_square *sq)
 int	main(int argc, char **argv)
 {
 	t_square	sq;
-	mlx_t		*window;
+//	mlx_t		*window;
 
 	minecraft(&sq);
 	if (argc != 2)
@@ -374,10 +374,12 @@ int	main(int argc, char **argv)
 	sq.map[0] = NULL;
 	veggietales(argv, &sq);
 	mapdeluxe(&sq);
-	window = mlx_init(1920, 1080, "cub3d", false);
-	if (!window)
-		die("Window blew up...", &sq, 0);
-	mlx_loop(window);
-	mlx_terminate(window);
+//	window = mlx_init(1920, 1080, "cub3d", false);
+//	if (!window)
+//		die("Window blew up...", &sq, 0);
+	xrayingit(&sq);
+	free(sq.cone);
+//	mlx_loop(window);
+//	mlx_terminate(window);
 	die("Program finished", &sq, 0);
 }

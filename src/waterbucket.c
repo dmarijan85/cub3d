@@ -6,7 +6,7 @@
 /*   By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:25:49 by mclaver-          #+#    #+#             */
-/*   Updated: 2025/01/29 19:59:37 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/01/30 13:56:28 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,13 @@ int	isokay(t_square *sq, char c, t_coord player)
 		{
 			sq->pnbr += 1;
 			sq->player = c;
-			if (sq->player == 'E')
+			if (c == 'E')
 				sq->centerangle = 0;
-			else if (sq->player == 'N')
+			else if (c == 'N')
 				sq->centerangle = 90;
-			else if (sq->player == 'W')
+			else if (c == 'W')
 				sq->centerangle = 180;
-			else if (sq->player == 'S')
+			else if (c == 'S')
 				sq->centerangle = 270;
 			sq->pcoord = player;
 		}
