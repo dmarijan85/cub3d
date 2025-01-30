@@ -76,24 +76,26 @@ float	zeus(t_square *sq, int angle)
 	while (!gonetoofar(sq->pcoord, x, y))
 	{
 		printf("x coord: %f\ny coord: %f\n", x, y);
-		if (slope > 0)
+		if (angle < 90 || angle > 270)
 			x += step;
-		else if (slope < 0)
+		else if (angle > 90 && angle < 270)
 			x -= step;
-		if (angle > 0 && angle < 180)
+		if (angle == 90)
+			y -= step;
+		else if (angle == 270)
+			y += step;
+		else if (angle > 0 && angle < 180)
 			y -= absf(slope * step);
 		else if (angle > 180 && angle < 360)
 			y += absf(slope * step);
-		if (slope == 0)
-			y -= step
 		printf("stepped at\nx: %f\ny: %f\nit is: %c\n\n", x, y, sq->map[(int)y][(int)x]);
 		if ((int)y < 0)
 			y = 0;
 		if ((int)x < 0)
 			x = 0;
+//TODO if y > ft_size(map) : y=ft_size(map)-1, IF x > mapsize mas de lo mismo
 		if (sq->map[(int)y][(int)x] == '1')
 			return (sqrt(abspwr(absf(x) - sq->pcoord.x) + abspwr(absf(y) - sq->pcoord.y)));
-		//este el el calculo que sospecho ^
 	}
 	return (-1);
 }
@@ -102,14 +104,20 @@ void	coneheads(t_square *sq)
 {
 	float	*cone;
 	int		i;
+	int angle;
 
 	cone = malloc(61 * sizeof(float));
 	cone[60] = 0;
 	i = 0;
 	while (i <= 60)
 	{
-		printf("-----CENTERANGLE + 30 - %i = %f\n", i, sq->centerangle + (30 - i));
-		cone[i] = zeus(sq, sq->centerangle + (30 - i));
+		angle = sq->centerangle + (30 - i);
+		if (angle < 0)
+			angle = abs(angle);
+		else if (angle >= 360)
+			angle -= 360;
+		printf("-----CENTERANGLE + 30 - %i = %f\n", i, angle);
+		cone[i] = zeus(sq, angle);
 		i++;
 	}
 	sq->cone = cone;
