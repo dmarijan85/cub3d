@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/01/30 14:06:15 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/01 19:31:35 by dmarijan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,30 @@ typedef struct s_coord
 	int				y;
 }				t_coord;
 
+typedef struct s_fcoord
+{
+	float			x;
+	float			y;
+}				t_fcoord;
+
 typedef struct s_square
 {
-	char	*no;
-	char	*so;
-	char	*we;
-	char	*ea;
-	int		fc[3];
-	int		cc[3];
-	char	**map;
-	char	*gnl;
-	int		mapdepth;
-	int		infonumber;
-	char	player;
-	t_coord	pcoord;
-	float	centerangle;
-	int		pnbr;
-	float	*cone;
+	char		*no;
+	char		*so;
+	char		*we;
+	char		*ea;
+	int			fc[3];
+	int			cc[3];
+	char		**map;
+	char		*gnl;
+	int			mapdepth;
+	int			infonumber;
+	char		player;
+	t_fcoord	pcoord;
+	float		centerangle;
+	int			pnbr;
+	int			angle;
+	float		*cone;
 }				t_square;
 
 void	minecraft(t_square *sq);
