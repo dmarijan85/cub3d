@@ -6,7 +6,7 @@
 #    By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/10 14:39:35 by mclaver-          #+#    #+#              #
-#    Updated: 2025/02/01 18:38:39 by dmarijan         ###   ########.fr        #
+#    Updated: 2025/02/03 14:29:31 by dmarijan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ INCLUDE_DIRS = -I. -I$(LIBFT_DIR) -I$(MLX42_DIR)/include
 SRC_FILES = src/main.c			\
 			src/waterbucket.c	\
 			src/minecraft.c		\
-			src/xrayzzzz.c
+			src/xrayzzzz.c		\
+			src/picturethis.c
 
 OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

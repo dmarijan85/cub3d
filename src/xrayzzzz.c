@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:48:56 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/01 19:53:55 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/03 12:53:57 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ float	big_floppa_returns(t_square *sq, float x, float y, float step)
 		x -= absf(slope * step);
 	if (((int)x != (int)xog || (int)y != (int)yog) && sq->map[(int)y][(int)x] == '1')
 		return (big_floppa_returns(sq, xog, yog, step / 2));
-	if (step > 0.001)
+	if (step > 0.01)
 		return (step);
-	return (0.001);
+	return (0.01);
 }
 
 float	big_floppa(t_square *sq, float x, float y, float step)
@@ -106,9 +106,9 @@ float	big_floppa(t_square *sq, float x, float y, float step)
 		y += absf(slope * step);
 	if (((int)x != (int)xog || (int)y != (int)yog) && sq->map[(int)y][(int)x] == '1')
 		return (big_floppa(sq, xog, yog, step / 2));
-	if (step > 0.001)
+	if (step > 0.01)
 		return (step);
-	return (0.001);
+	return (0.01);
 }
 
 void	move_x(t_square *sq, int angle, float *x, float *y)
@@ -117,7 +117,7 @@ void	move_x(t_square *sq, int angle, float *x, float *y)
 	float	slope;
 
 	slope = tanf(dtr(angle));
-	step = big_floppa(sq, *x, *y, 1.024);
+	step = big_floppa(sq, *x, *y, 1);
 	if (angle < 90 || angle > 270)
 		*x += step;
 	else if (angle > 90 && angle < 270)
@@ -137,7 +137,7 @@ void	move_y(t_square *sq, int angle, float *x, float *y)
 		slope = 0;
 	else
 		slope = 1 / tanf(dtr(angle));
-	step = big_floppa_returns(sq, *x, *y, 1.024);
+	step = big_floppa_returns(sq, *x, *y, 1);
 	if (angle > 0 && angle < 180)
 		*y -= step;
 	else if (angle > 180 && angle < 360)

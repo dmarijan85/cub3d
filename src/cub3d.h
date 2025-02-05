@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/01 19:31:35 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:25:36 by dmarijan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,7 @@ int		ft_isspace(char c);
 int		flood_fill(t_square *sq, char **map, t_coord player);
 int		ft_size(char **map);
 void	xrayingit(t_square *sq);
+void	die(char *errmsg, t_square *sq, int fd);
+void	picture_this(t_square *sq);
 
 #endif

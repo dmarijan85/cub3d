@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:08:36 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/01 19:22:15 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:01:31 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	minecraft(t_square *sq)
 	sq->player = '\0';
 	sq->centerangle = 0;
 	sq->pnbr = 0;
-	sq->slope = 0;
 	while (i < 3)
 	{
 		sq->fc[i] = 0;
