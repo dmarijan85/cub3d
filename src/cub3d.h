@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/06 15:37:03 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:43:42 by mclaver-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ typedef struct s_square
 	int			angle;
 	float		*cone;
 	mlx_t		*window;
+	int			winheight;
+	int			winwidth;
 	int			tempwall[3];
 }				t_square;
 

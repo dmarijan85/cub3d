@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:22:24 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/06 15:40:20 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:47:04 by mclaver-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void	picture_this(t_square *sq)
 	mlx_image_t	*floor;
 	mlx_image_t	*ceiling;
 
-	window = mlx_init(1920, 1080, "cub3d", false);
+	window = mlx_init(sq->winwidth, sq->winheight, "cub3d", false);
 	if (!window)
 		die("Window blew up...", sq, 0);
-	floor = mlx_new_image(window, 1920, 540);
-	ceiling = mlx_new_image(window, 1920, 540);
+	floor = mlx_new_image(window, sq->winwidth, sq->winheight / 2);
+	ceiling = mlx_new_image(window, sq->winwidth, sq->winheight / 2);
 	mlx_image_to_window(window, ceiling, 0, 0);
-	mlx_image_to_window(window, floor, 0, 540);
+	mlx_image_to_window(window, floor, 0, sq->winheight / 2);
 	ft_putplane(sq->fc, floor);
 	ft_putplane(sq->cc, ceiling);
 	sq->window = window;

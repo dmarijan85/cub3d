@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:11:02 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/06 15:38:02 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/02/06 17:48:24 by mclaver-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ void	the_brutalist(t_square *sq, mlx_t *window, int i)
 	mlx_image_t	*wall;
 	float		height;
 
-	height = ((sq->cone[i] * -55.38) + 1080);
-	printf("height: %f\n", height);
-	if (height > 0)
+	height = ((sq->cone[i] * (-1.15 * sq->winheight / 20)) + (sq->winheight * 1)); //1.15 arbitrario
+	if (height > 0 && sq->cone[i] != -1)
 	{
-		wall = mlx_new_image(window, 32, height);
+		printf("angle %i, height: %f\n", i, height);
+		wall = mlx_new_image(window, sq->winwidth / 60, height);
 		ft_putplane(sq->tempwall, wall);
-		mlx_image_to_window(window, wall, 32 * i, (1080 - height) / 2);
+		mlx_image_to_window(window, wall, (sq->winwidth / 60) * i, (sq->winheight - height) / 2);
 	}
 }
 
