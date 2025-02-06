@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/03 14:29:51 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/06 15:39:05 by dmarijan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -374,7 +374,11 @@ int	main(int argc, char **argv)
 	veggietales(argv, &sq);
 	mapdeluxe(&sq);
 	xrayingit(&sq);
-	free(sq.cone);
 	picture_this(&sq);
+	//some sort of while loop
+	trump_deluxe(&sq);
+	mlx_loop(sq.window);
+	mlx_terminate(sq.window);
+	free(sq.cone);
 	die("Program finished", &sq, 0);
 }

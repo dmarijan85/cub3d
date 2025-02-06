@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/03 14:25:36 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:37:03 by dmarijan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct s_square
 	int			pnbr;
 	int			angle;
 	float		*cone;
+	mlx_t		*window;
+	int			tempwall[3];
 }				t_square;
 
 void	minecraft(t_square *sq);
@@ -64,5 +66,8 @@ int		ft_size(char **map);
 void	xrayingit(t_square *sq);
 void	die(char *errmsg, t_square *sq, int fd);
 void	picture_this(t_square *sq);
+void	trump_deluxe(t_square *sq);
+void	ft_putplane(int *rgb, mlx_image_t *image);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:22:24 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/03 14:29:09 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/06 15:40:20 by dmarijan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void ft_putplane(int *rgb, mlx_image_t *image)
 		i++;
 	}
 }
+
 void	picture_this(t_square *sq)
 {
 	mlx_t		*window;
@@ -54,6 +55,5 @@ void	picture_this(t_square *sq)
 	mlx_image_to_window(window, floor, 0, 540);
 	ft_putplane(sq->fc, floor);
 	ft_putplane(sq->cc, ceiling);
-	mlx_loop(window);
-	mlx_terminate(window);
+	sq->window = window;
 }
