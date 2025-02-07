@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/06 16:43:42 by mclaver-         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:40:44 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,32 @@ typedef struct s_square
 	char		player;
 	t_fcoord	pcoord;
 	float		centerangle;
+	bool		coneflag;
 	int			pnbr;
-	int			angle;
+	float		angle;
 	float		*cone;
 	mlx_t		*window;
+	mlx_image_t	*floppatron;
 	int			winheight;
 	int			winwidth;
 	int			tempwall[3];
 }				t_square;
 
-void	minecraft(t_square *sq);
-int		ft_isspace(char c);
-int		flood_fill(t_square *sq, char **map, t_coord player);
-int		ft_size(char **map);
-void	xrayingit(t_square *sq);
-void	die(char *errmsg, t_square *sq, int fd);
-void	picture_this(t_square *sq);
-void	trump_deluxe(t_square *sq);
-void	ft_putplane(int *rgb, mlx_image_t *image);
+void		minecraft(t_square *sq);
+int			ft_isspace(char c);
+int			flood_fill(t_square *sq, char **map, t_coord player);
+int			ft_size(char **map);
+void		xrayingit(t_square *sq);
+void		die(char *errmsg, t_square *sq, int fd);
+void		picture_this(t_square *sq);
+void		trump_deluxe(t_square *sq);
+void		ft_putplane(int *rgb, mlx_image_t *image);
+float		dtr(float degrees);
+void		hook(void *param);
+uint32_t	get_colour(int *color);
+float		absf(float num);
+void		move_y(t_square *sq, float angle, float *x, float *y);
+void		move_x(t_square *sq, float angle, float *x, float *y);
 
 
 #endif

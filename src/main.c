@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/06 15:39:05 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/02/07 19:39:56 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,6 +326,8 @@ void	waterbucket(t_square *sq, int x, int y)
 	if (flood_fill(sq, tmp, player) || !sq->player || sq->pnbr != 1)
 	{
 		array_free(tmp);
+		if (sq->pnbr != 1)
+			printf("pnbr = %i\n", sq->pnbr);
 		die("Holy shit lois the map is illegal as fuck bro", sq, 0);
 	}
 	array_free(tmp);
@@ -373,10 +375,10 @@ int	main(int argc, char **argv)
 	sq.map[0] = NULL;
 	veggietales(argv, &sq);
 	mapdeluxe(&sq);
-	xrayingit(&sq);
 	picture_this(&sq);
-	//some sort of while loop
+	xrayingit(&sq);
 	trump_deluxe(&sq);
+	mlx_loop_hook(sq.window, &hook, &sq);
 	mlx_loop(sq.window);
 	mlx_terminate(sq.window);
 	free(sq.cone);

@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:48:56 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/03 12:53:57 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/07 19:39:38 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ float	big_floppa_returns(t_square *sq, float x, float y, float step)
 
 	xog = x;
 	yog = y;
-	if (sq->angle == 90 || sq->angle == 270)
+	if ((sq->angle == 90) || (sq->angle == 270))
 		slope = 0;
 	else
-		slope = tanf(dtr(sq->angle));
+		slope = 1 / tanf(dtr(sq->angle));
 	if (sq->angle > 0 && sq->angle < 180)
 		y -= step;
 	else if (sq->angle > 180 && sq->angle < 360)
@@ -111,7 +111,7 @@ float	big_floppa(t_square *sq, float x, float y, float step)
 	return (0.01);
 }
 
-void	move_x(t_square *sq, int angle, float *x, float *y)
+void	move_x(t_square *sq, float angle, float *x, float *y)
 {
 	float	step;
 	float	slope;
@@ -128,7 +128,7 @@ void	move_x(t_square *sq, int angle, float *x, float *y)
 		*y += absf(slope * step);
 }
 
-void	move_y(t_square *sq, int angle, float *x, float *y)
+void	move_y(t_square *sq, float angle, float *x, float *y)
 {
 	float	step;
 	float	slope;
@@ -160,7 +160,8 @@ float	zeus(t_square *sq)
 		slope = 0;
 	else
 		slope = tanf(dtr(sq->angle));
-//	printf("player: x: %f, y: %f, slope %f\n\n", sq->pcoord.x, sq->pcoord.y, slope);
+//	printf("SLOPE = %f\n\n", slope);
+	printf("player: x: %f, y: %f, slope %f;		angle = %f\n", sq->pcoord.x, sq->pcoord.y, slope, sq->angle);
 	while (!gonetoofar(sq->pcoord, x, y))
 	{
 		if (absf(slope) > 1 || sq->angle == 90 || sq->angle == 270)
@@ -176,22 +177,23 @@ float	zeus(t_square *sq)
 void	coneheads(t_square *sq)
 {
 	float	*cone;
-	int		i;
-	int		angle;
+	float	i;
+	float	angle;
 
-	cone = malloc(61 * sizeof(float));
-	cone[60] = 0;
+	cone = malloc((sq->winwidth + 1) * sizeof(float));
+	cone[sq->winwidth] = -1;
 	i = 0;
-	while (i <= 60)
+	while (i < sq->winwidth)
 	{
-		angle = sq->centerangle + (30 - i);
+		angle = sq->centerangle + (30.0 - ((60.0 / sq->winwidth) * i));
 		if (angle < 0)
 			angle = 360 + angle;
 		else if (angle >= 360)
 			angle -= 360;
-//		printf("-----CENTERANGLE + 30 - %i = %i\n", i, angle);
 		sq->angle = angle;
-		cone[i] = zeus(sq);
+		printf("%f:	ANGLE1 = %f;	ANGLE2 = %f;	length = %f;\n", i, sq->angle, angle, cone[(int)i]);
+		cone[(int)i] = zeus(sq);
+		printf("%f:	ANGLE1 = %f;	ANGLE2 = %f;	length = %f;\n\n", i, sq->angle, angle, cone[(int)i]);
 		i++;
 	}
 	sq->cone = cone;
@@ -200,11 +202,4 @@ void	coneheads(t_square *sq)
 void	xrayingit(t_square *sq)
 {
 	coneheads(sq);
-	int	i;
-	i = 0;
-	while (i <= 60)
-	{
-		printf("Cone in [%i], angle %f: %f\n", i, sq->centerangle + (30 - i), sq->cone[i]);
-		i++;
-	}
 }

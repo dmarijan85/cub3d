@@ -6,7 +6,7 @@
 #    By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/10 14:39:35 by mclaver-          #+#    #+#              #
-#    Updated: 2025/02/06 15:35:32 by dmarijan         ###   ########.fr        #
+#    Updated: 2025/02/07 15:54:20 by dmarijan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ SRC_FILES = src/main.c			\
 			src/minecraft.c		\
 			src/xrayzzzz.c		\
 			src/picturethis.c	\
-			src/iminyourwalls.c
+			src/iminyourwalls.c	\
+			src/jarvishookthis.c
 
 OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

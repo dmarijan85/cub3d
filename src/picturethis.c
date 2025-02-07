@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:22:24 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/06 16:47:04 by mclaver-         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:44:43 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ uint32_t	get_colour(int *color)
 	return (get_acolour(255, color[0], color[1], color[2]));
 }
 
-void ft_putplane(int *rgb, mlx_image_t *image)
+void	ft_putplane(int *rgb, mlx_image_t *image)
 {
 	uint32_t	i;
 	uint32_t	y;
