@@ -1,7 +1,0 @@
-/home/mclaver-/cursus/m4/cub3d/build/CMakeFiles/mlx42.dir
-/home/mclaver-/cursus/m4/cub3d/build/CMakeFiles/edit_cache.dir
-/home/mclaver-/cursus/m4/cub3d/build/CMakeFiles/rebuild_cache.dir
-/home/mclaver-/cursus/m4/cub3d/build/CMakeFiles/list_install_components.dir
-/home/mclaver-/cursus/m4/cub3d/build/CMakeFiles/install.dir
-/home/mclaver-/cursus/m4/cub3d/build/CMakeFiles/install/local.dir
-/home/mclaver-/cursus/m4/cub3d/build/CMakeFiles/install/strip.dir
