@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:48:33 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/07 19:54:04 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 16:27:47 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	jarvis_x(float angle, float *x, float *y)
 	float	step;
 	float	slope;
 
-	step = 0.05;
+	step = 0.02;
 	slope = tanf(dtr(angle));
 	if (angle < 90 || angle > 270)
 		*x += step;
@@ -34,7 +34,7 @@ void	jarvis_y(float angle, float *x, float *y)
 	float	step;
 	float	slope;
 
-	step = 0.05;
+	step = 0.02;
 	if (angle == 90 || angle == 270)
 		slope = 0;
 	else
@@ -53,7 +53,11 @@ void	move(t_square *sq, float diff)
 {
 	float	slope;
 	float	tempangle;
+	float	tx;
+	float	ty;
 
+	tx = sq->pcoord.x;
+	ty = sq->pcoord.y;
 	tempangle = (sq->centerangle + diff);
 	if (tempangle >= 360)
 		tempangle -= 360;
@@ -61,18 +65,25 @@ void	move(t_square *sq, float diff)
 		slope = 0;
 	else
 		slope = tanf(dtr(tempangle));
+	
 	if (absf(slope) > 1 || tempangle == 90 || tempangle == 270)
-		jarvis_y(tempangle, &sq->pcoord.x, &sq->pcoord.y);
+		jarvis_y(tempangle, &tx, &ty);
 	else
-		jarvis_x(tempangle, &sq->pcoord.x, &sq->pcoord.y);
-	printf("player coords x: %f, y: %f\nslope: %f\n tempangle: %f\n\n", sq->pcoord.x, sq->pcoord.y, slope, tempangle);
+		jarvis_x(tempangle, &tx, &ty);
+	if (sq->map[(int)ty][(int)tx] != '1')
+	{
+		sq->pcoord.x = tx;
+		sq->pcoord.y = ty;
+	}
 }
 
 void	hook(void *param)
 {
 	t_square	*sq;
+	bool		hookers;
 
 	sq = param;
+	hookers = false;
 	if (mlx_is_key_down(sq->window, MLX_KEY_ESCAPE))
 	{
 		mlx_close_window(sq->window);
@@ -81,50 +92,39 @@ void	hook(void *param)
 	if (mlx_is_key_down(sq->window, MLX_KEY_W))
 	{
 		move(sq, 0);
-		if (sq->floppatron)
-			mlx_delete_image(sq->window, sq->floppatron);
-		xrayingit(sq);
-		trump_deluxe(sq);
+		hookers = true;
 	}
 	if (mlx_is_key_down(sq->window, MLX_KEY_S))
 	{
 		move(sq, 180);
-		if (sq->floppatron)
-			mlx_delete_image(sq->window, sq->floppatron);
-		xrayingit(sq);
-		trump_deluxe(sq);
+		hookers = true;
 	}
 	if (mlx_is_key_down(sq->window, MLX_KEY_A))
 	{
 		move(sq, 90);
-		if (sq->floppatron)
-			mlx_delete_image(sq->window, sq->floppatron);
-		xrayingit(sq);
-		trump_deluxe(sq);
+		hookers = true;
 	}
 	if (mlx_is_key_down(sq->window, MLX_KEY_D))
 	{
 		move(sq, 270);
-		if (sq->floppatron)
-			mlx_delete_image(sq->window, sq->floppatron);
-		xrayingit(sq);
-		trump_deluxe(sq);
+		hookers = true;
 	}
 	if (mlx_is_key_down(sq->window, MLX_KEY_LEFT))
 	{
 		sq->centerangle += 1;
 		if (sq->centerangle >= 360)
 			sq->centerangle -= 360;
-		if (sq->floppatron)
-			mlx_delete_image(sq->window, sq->floppatron);
-		xrayingit(sq);
-		trump_deluxe(sq);
+		hookers = true;
 	}
-	if (mlx_is_key_down(sq->window, MLX_KEY_RIGHT))
+	else if (mlx_is_key_down(sq->window, MLX_KEY_RIGHT))
 	{
 		sq->centerangle -= 1;
 		if (sq->centerangle < 0)
 			sq->centerangle += 360;
+		hookers = true;
+	}
+	if (hookers)
+	{
 		if (sq->floppatron)
 			mlx_delete_image(sq->window, sq->floppatron);
 		xrayingit(sq);

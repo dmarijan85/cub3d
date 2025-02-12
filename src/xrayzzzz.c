@@ -6,28 +6,13 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:48:56 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/07 19:39:38 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/12 16:25:28 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <math.h>
 
-/*
-
-1 - Decidir un angulo pal cono de vision
-
-	DEPTH PERCEPTION
-
-	para cada angulo:
-
-	-   1
-	 |  1
-	  ->1 oops
-111111111
-
-
-*/
 float	absf(float num)
 {
 	if (num < 0)
@@ -57,6 +42,109 @@ float	dtr(float degrees)
 	return (radians);
 }
 
+void	pos_pepe_x(float angle, float *x, float *y)
+{
+	float	slope;
+	float	step;
+
+	slope = tanf(dtr(angle));
+	step = 0.42;
+	if (angle < 90 || angle > 270)
+		*x += step;
+	else if (angle > 90 && angle < 270)
+		*x -= step;
+	if (angle > 0 && angle < 180)
+		*y -= absf(slope * step);
+	else if (angle > 180 && angle < 360)
+		*y += absf(slope * step);
+}
+
+void	pos_pepe_y(float angle, float *x, float *y)
+{
+	float	slope;
+	float	step;
+
+	if (angle == 90 || angle == 270)
+		slope = 0;
+	else
+		slope = 1 / tanf(dtr(angle));
+	step = 0.42;
+	if (angle > 0 && angle < 180)
+		*y -= step;
+	else if (angle > 180 && angle < 360)
+		*y += step;
+	if (angle < 90 || angle > 270)
+		*x += absf(slope * step);
+	else if (angle > 90 && angle < 270)
+		*x -= absf(slope * step);
+}
+
+void	neg_pepe_x(float angle, float *x, float *y)
+{
+	float	slope;
+	float	step;
+
+	slope = tanf(dtr(angle));
+	step = 0.42;
+	if (angle < 90 || angle > 270)
+		*x -= step;
+	else if (angle > 90 && angle < 270)
+		*x += step;
+	if (angle > 0 && angle < 180)
+		*y += absf(slope * step);
+	else if (angle > 180 && angle < 360)
+		*y -= absf(slope * step);
+}
+
+void	neg_pepe_y(float angle, float *x, float *y)
+{
+	float	slope;
+	float	step;
+
+	if (angle == 90 || angle == 270)
+		slope = 0;
+	else
+		slope = 1 / tanf(dtr(angle));
+	step = 0.42;
+	if (angle > 0 && angle < 180)
+		*y += step;
+	else if (angle > 180 && angle < 360)
+		*y -= step;
+	if (angle < 90 || angle > 270)
+		*x -= absf(slope * step);
+	else if (angle > 90 && angle < 270)
+		*x += absf(slope * step);
+}
+
+bool	checkpepe(t_square *sq, float px, float py)
+{
+	float	pepeangle;
+	float	pepeslope;
+	float	nx;
+	float	ny;
+
+	nx = px;
+	ny = py;
+	pepeangle = sq->angle + 90;
+	if (pepeangle >= 360)
+		pepeangle -= 360;
+	if (pepeangle == 0 || pepeangle == 90 || pepeangle == 180 || pepeangle == 270)
+		pepeslope = 0;
+	else
+		pepeslope = (tanf(dtr(pepeangle)));
+	if (absf(pepeslope) > 1 || pepeangle == 90 || pepeangle == 270)
+		pos_pepe_y(pepeangle, &px, &py);
+	else
+		pos_pepe_x(pepeangle, &px, &py);
+	if (absf(pepeslope) > 1 || pepeangle == 90 || pepeangle == 270)
+		neg_pepe_y(pepeangle, &nx, &ny);
+	else
+		neg_pepe_x(pepeangle, &nx, &ny);
+	if (sq->map[(int)py][(int)px] == '1' && sq->map[(int)ny][(int)nx] == '1')
+		return (true);
+	return (false);
+}
+
 float	big_floppa_returns(t_square *sq, float x, float y, float step)
 {
 	float	slope;
@@ -77,7 +165,7 @@ float	big_floppa_returns(t_square *sq, float x, float y, float step)
 		x += absf(slope * step);
 	else if (sq->angle > 90 && sq->angle < 270)
 		x -= absf(slope * step);
-	if (((int)x != (int)xog || (int)y != (int)yog) && sq->map[(int)y][(int)x] == '1')
+	if (((int)x != (int)xog || (int)y != (int)yog) || ((sq->map[(int)y][(int)x] == '1')))
 		return (big_floppa_returns(sq, xog, yog, step / 2));
 	if (step > 0.01)
 		return (step);
@@ -104,48 +192,84 @@ float	big_floppa(t_square *sq, float x, float y, float step)
 		y -= absf(slope * step);
 	else if (sq->angle > 180 && sq->angle < 360)
 		y += absf(slope * step);
-	if (((int)x != (int)xog || (int)y != (int)yog) && sq->map[(int)y][(int)x] == '1')
+	if (((int)x != (int)xog || (int)y != (int)yog) || ((sq->map[(int)y][(int)x] == '1')))
 		return (big_floppa(sq, xog, yog, step / 2));
 	if (step > 0.01)
 		return (step);
 	return (0.01);
 }
 
-void	move_x(t_square *sq, float angle, float *x, float *y)
+float	ft_round(float nbr)
 {
-	float	step;
+	float	whole;
+
+	whole = (int)nbr;
+	nbr -= whole;
+	nbr *= 10;
+	if (nbr <= 1)
+		return (whole);
+	else if (nbr >= 9)
+		return (whole + 1.0);
+	return (whole + (nbr / 10));
+}
+
+void	move_x(t_square *sq, float step, float *x, float *y)
+{
 	float	slope;
 
-	slope = tanf(dtr(angle));
-	step = big_floppa(sq, *x, *y, 1);
-	if (angle < 90 || angle > 270)
+	slope = tanf(dtr(sq->angle));
+	step = big_floppa(sq, *x, *y, step);
+	if (sq->angle < 90 || sq->angle > 270)
 		*x += step;
-	else if (angle > 90 && angle < 270)
+	else if (sq->angle > 90 && sq->angle < 270)
 		*x -= step;
-	if (angle > 0 && angle < 180)
+	if (sq->angle > 0 && sq->angle < 180)
 		*y -= absf(slope * step);
-	else if (angle > 180 && angle < 360)
+	else if (sq->angle > 180 && sq->angle < 360)
 		*y += absf(slope * step);
 }
 
-void	move_y(t_square *sq, float angle, float *x, float *y)
+void	move_y(t_square *sq, float step, float *x, float *y)
 {
-	float	step;
 	float	slope;
 
-	if (angle == 90 || angle == 270)
+	if (sq->angle == 90 || sq->angle == 270)
 		slope = 0;
 	else
-		slope = 1 / tanf(dtr(angle));
-	step = big_floppa_returns(sq, *x, *y, 1);
-	if (angle > 0 && angle < 180)
+		slope = 1 / tanf(dtr(sq->angle));
+	step = big_floppa_returns(sq, *x, *y, step);
+	if (sq->angle > 0 && sq->angle < 180)
 		*y -= step;
-	else if (angle > 180 && angle < 360)
+	else if (sq->angle > 180 && sq->angle < 360)
 		*y += step;
-	if (angle < 90 || angle > 270)
+	if (sq->angle < 90 || sq->angle > 270)
 		*x += absf(slope * step);
-	else if (angle > 90 && angle < 270)
+	else if (sq->angle > 90 && sq->angle < 270)
 		*x -= absf(slope * step);
+}
+
+float	ft_roundingit(t_square *sq, float *x, float *y)
+{
+	float	whole;
+	float	cx;
+	float	cy;
+
+	cx = *x;
+	cy = *y;
+	if (checkpepe(sq, *x, *y))
+	{
+		whole = (int)cx;
+		cx -= whole;
+		cx *= 1000;
+		whole = (int)cy;
+		cy -= whole;
+		cy *= 1000;
+		if ((cy >= 975 && cx >= 975) || (cy <= 25 && cx <= 25) || (cy >= 975 && cx <= 25) || (cy <= 25 && cx >= 975))
+			return (sqrt(abspwr(absf(roundf(*x)) - sq->pcoord.x) + abspwr(absf(roundf(*y)) - sq->pcoord.y)));
+	}
+	if (sq->map[(int)*y][(int)*x] == '1')
+		return (sqrt(abspwr(absf(*x) - sq->pcoord.x) + abspwr(absf(*y) - sq->pcoord.y)));
+	return (0);
 }
 
 float	zeus(t_square *sq)
@@ -153,6 +277,7 @@ float	zeus(t_square *sq)
 	float	slope;
 	float	x;
 	float	y;
+	float	distance;
 
 	x = sq->pcoord.x;
 	y = sq->pcoord.y;
@@ -160,16 +285,15 @@ float	zeus(t_square *sq)
 		slope = 0;
 	else
 		slope = tanf(dtr(sq->angle));
-//	printf("SLOPE = %f\n\n", slope);
-	printf("player: x: %f, y: %f, slope %f;		angle = %f\n", sq->pcoord.x, sq->pcoord.y, slope, sq->angle);
 	while (!gonetoofar(sq->pcoord, x, y))
 	{
 		if (absf(slope) > 1 || sq->angle == 90 || sq->angle == 270)
-			move_y(sq, sq->angle, &x, &y);
+			move_y(sq, 0.1, &x, &y);
 		else
-			move_x(sq, sq->angle, &x, &y);
-		if (sq->map[(int)y][(int)x] == '1')
-			return (sqrt(abspwr(absf(x) - sq->pcoord.x) + abspwr(absf(y) - sq->pcoord.y)));
+			move_x(sq, 0.1, &x, &y);
+		distance = ft_roundingit(sq, &x, &y);
+		if (distance)
+			return (distance);
 	}
 	return (-1);
 }
@@ -191,9 +315,7 @@ void	coneheads(t_square *sq)
 		else if (angle >= 360)
 			angle -= 360;
 		sq->angle = angle;
-		printf("%f:	ANGLE1 = %f;	ANGLE2 = %f;	length = %f;\n", i, sq->angle, angle, cone[(int)i]);
 		cone[(int)i] = zeus(sq);
-		printf("%f:	ANGLE1 = %f;	ANGLE2 = %f;	length = %f;\n\n", i, sq->angle, angle, cone[(int)i]);
 		i++;
 	}
 	sq->cone = cone;
