@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/07 19:39:56 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/15 14:22:56 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,10 @@ void	die(char *errmsg, t_square *sq, int fd)
 	free(sq->ea);
 	free(sq->we);
 	free(sq->so);
+	free(sq->swall);
+	free(sq->nwall);
+	free(sq->ewall);
+	free(sq->wwall);
 	if (sq->gnl)
 		get_free(&sq->gnl);
 	array_free(sq->map);
@@ -382,5 +386,7 @@ int	main(int argc, char **argv)
 	mlx_loop(sq.window);
 	mlx_terminate(sq.window);
 	free(sq.cone);
+	free(sq.liar);
+	free(sq.bts);
 	die("Program finished", &sq, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:11:02 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/10 14:00:15 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/15 15:00:11 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,30 @@ void	the_brutalist(t_square *sq, int i, mlx_image_t *wall)
 	if (sq->cone[i] == -1)
 		return ;
 	height = ((0.75 * sq->winheight) / (sq->cone[i] * tan(dtr(60.0 / 2))));
-	if (height > 0)
-		ft_putcolumn(sq->tempwall, wall, height, i);
+	if (height > 0 && sq->bts[i] == NORTH)
+		ft_putcolumn(sq->nwall, wall, height, i);
+	else if (height > 0 && sq->bts[i] == SOUTH)
+		ft_putcolumn(sq->swall, wall, height, i);
+	else if (height > 0 && sq->bts[i] == EAST)
+		ft_putcolumn(sq->ewall, wall, height, i);
+	else if (height > 0 && sq->bts[i] == WEST)
+		ft_putcolumn(sq->wwall, wall, height, i);
+	else
+		return ;
+}
+
+int		ft_smoothlikebutter(t_square *sq, int liar)
+{
+	float	liardistance;
+	int		i;
+
+	i = -15;
+	liardistance = sq->cone[liar];
+	while (i < 15)
+	{
+		if ()
+		i++;
+	}
 }
 
 //build the wall!!!
@@ -54,6 +76,12 @@ void	trump_deluxe(t_square *sq)
 	mlx_image_t	*wall;
 
 	wall = mlx_new_image(sq->window, sq->winwidth, sq->winheight);
+	i = 0;
+	while (sq->liar[i] != -1)
+	{
+		sq->bts[sq->liar[i]] = ft_smoothlikebutter(sq->liar[i]);
+		i++;
+	}
 	i = 0;
 	while (i < sq->winwidth)
 	{

@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:48:33 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/12 16:27:47 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/14 15:03:09 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ void	move(t_square *sq, float diff)
 		slope = 0;
 	else
 		slope = tanf(dtr(tempangle));
-	
 	if (absf(slope) > 1 || tempangle == 90 || tempangle == 270)
 		jarvis_y(tempangle, &tx, &ty);
 	else
 		jarvis_x(tempangle, &tx, &ty);
-	if (sq->map[(int)ty][(int)tx] != '1')
+	if ((sq->map[(int)(ty - (sinf(dtr(tempangle + 5))/4))][(int)(tx + (cosf(dtr(tempangle + 5))/4))] != '1')
+		&& (sq->map[(int)(ty - (sinf(dtr(tempangle - 5))/4))][(int)(tx + (cosf(dtr(tempangle - 5))/4))] != '1'))
 	{
 		sq->pcoord.x = tx;
 		sq->pcoord.y = ty;
@@ -125,6 +125,7 @@ void	hook(void *param)
 	}
 	if (hookers)
 	{
+		printf("player coords x: %f y: %f\ncenterangle: %f\n", sq->pcoord.x, sq->pcoord.y, sq->centerangle);
 		if (sq->floppatron)
 			mlx_delete_image(sq->window, sq->floppatron);
 		xrayingit(sq);

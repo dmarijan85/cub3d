@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:08:36 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/07 17:15:10 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/15 14:54:14 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	minecraft(t_square *sq)
 {
 	int	i;
+	int	*liar;
 
 	i = 0;
 	sq->no = NULL;
@@ -32,11 +33,25 @@ void	minecraft(t_square *sq)
 	sq->winwidth = 1200;
 	sq->coneflag = false;
 	sq->floppatron = NULL;
+	sq->iliar = 0;
 	while (i < 3)
 	{
 		sq->fc[i] = 0;
 		sq->cc[i] = 0;
-		sq->tempwall[i] = 150;
+		sq->nwall[i] = 50;
+		sq->swall[i] = 50;
+		sq->ewall[i] = 50;
+		sq->wwall[i] = 50;
+		i++;
+	}
+	sq->nwall[2] = 200;
+	sq->swall[0] = 200;
+	sq->ewall[1] = 200;
+	i = 0;
+	while (i < sq->winwidth)
+	{
+		liar = malloc((sq->winwidth + 1) * sizeof(int));
+		liar[i] = -1;
 		i++;
 	}
 }

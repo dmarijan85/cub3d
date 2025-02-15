@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:48:56 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/12 16:25:28 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/15 14:55:32 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ float	dtr(float degrees)
 {
 	float	radians;
 
+	if (degrees >= 360)
+		degrees -= 360;
+	if (degrees < 0)
+		degrees += 360;
 	radians = degrees * (PI / 180.0);
 	return (radians);
 }
@@ -248,14 +252,46 @@ void	move_y(t_square *sq, float step, float *x, float *y)
 		*x -= absf(slope * step);
 }
 
-float	ft_roundingit(t_square *sq, float *x, float *y)
+void	ft_bts(t_square *sq, float x, float y, float i, float distance)
+{
+	float	decx;
+	float	decy;
+
+	if ((absf(x - roundf(x)) <= 0.05) && (absf(y - roundf(y)) <= 0.05) && absf(distance - sq->cone[(int)i-1]) < 0.1)
+	{
+		sq->liar[sq->iliar] = (int)i;
+		return ;
+	}
+	decx = x / roundf(x);
+	decy = y / roundf(y);
+	if (absf(x - roundf(x)) < absf(y - roundf(y)))
+	{
+		if (decx > 1)
+			sq->bts[(int)i] = EAST;
+		if (decx < 1)
+			sq->bts[(int)i] = WEST;
+	}
+	else if (absf(x - roundf(x)) > absf(y - roundf(y)))
+	{
+		if (decy > 1)
+			sq->bts[(int)i] = SOUTH;
+		if (decy < 1)
+			sq->bts[(int)i] = NORTH;
+	}
+	else
+		sq->bts[(int)i] = NONE;
+}
+
+float	ft_roundingit(t_square *sq, float *x, float *y, float i)
 {
 	float	whole;
 	float	cx;
 	float	cy;
+	float	distance;
 
 	cx = *x;
 	cy = *y;
+	distance = 0;
 	if (checkpepe(sq, *x, *y))
 	{
 		whole = (int)cx;
@@ -265,14 +301,19 @@ float	ft_roundingit(t_square *sq, float *x, float *y)
 		cy -= whole;
 		cy *= 1000;
 		if ((cy >= 975 && cx >= 975) || (cy <= 25 && cx <= 25) || (cy >= 975 && cx <= 25) || (cy <= 25 && cx >= 975))
-			return (sqrt(abspwr(absf(roundf(*x)) - sq->pcoord.x) + abspwr(absf(roundf(*y)) - sq->pcoord.y)));
+			distance = (sqrt(abspwr(absf(roundf(*x)) - sq->pcoord.x) + abspwr(absf(roundf(*y)) - sq->pcoord.y)));
 	}
 	if (sq->map[(int)*y][(int)*x] == '1')
-		return (sqrt(abspwr(absf(*x) - sq->pcoord.x) + abspwr(absf(*y) - sq->pcoord.y)));
-	return (0);
+		distance = (sqrt(abspwr(absf(*x) - sq->pcoord.x) + abspwr(absf(*y) - sq->pcoord.y)));
+	if (distance)
+	{
+		ft_bts(sq, *x, *y, i, distance);
+		printf("x coord y coord: %f %f\n\n", *x, *y);
+	}
+	return (distance);
 }
 
-float	zeus(t_square *sq)
+float	zeus(t_square *sq, float i)
 {
 	float	slope;
 	float	x;
@@ -288,10 +329,10 @@ float	zeus(t_square *sq)
 	while (!gonetoofar(sq->pcoord, x, y))
 	{
 		if (absf(slope) > 1 || sq->angle == 90 || sq->angle == 270)
-			move_y(sq, 0.1, &x, &y);
+			move_y(sq, 1, &x, &y);
 		else
-			move_x(sq, 0.1, &x, &y);
-		distance = ft_roundingit(sq, &x, &y);
+			move_x(sq, 1, &x, &y);
+		distance = ft_roundingit(sq, &x, &y, i);
 		if (distance)
 			return (distance);
 	}
@@ -300,12 +341,9 @@ float	zeus(t_square *sq)
 
 void	coneheads(t_square *sq)
 {
-	float	*cone;
 	float	i;
 	float	angle;
 
-	cone = malloc((sq->winwidth + 1) * sizeof(float));
-	cone[sq->winwidth] = -1;
 	i = 0;
 	while (i < sq->winwidth)
 	{
@@ -315,13 +353,30 @@ void	coneheads(t_square *sq)
 		else if (angle >= 360)
 			angle -= 360;
 		sq->angle = angle;
-		cone[(int)i] = zeus(sq);
+		sq->cone[(int)i] = zeus(sq, i);
 		i++;
 	}
-	sq->cone = cone;
 }
 
 void	xrayingit(t_square *sq)
 {
+	float	*cone;
+	int		*bts;
+
+	sq->iliar = 0;
+	if (sq->coneflag == false)
+	{
+		cone = malloc((sq->winwidth + 1) * sizeof(float));
+		if (!cone)
+			die("Malloc fail\n", sq, 0);
+		cone[sq->winwidth] = -1;
+		bts = malloc((sq->winwidth + 1) * sizeof(int));
+		if (!bts)
+			die("Malloc fail\n", sq, 0);
+		bts[sq->winwidth] = NONE;
+		sq->cone = cone;
+		sq->bts = bts;
+		sq->coneflag = true;
+	}
 	coneheads(sq);
 }

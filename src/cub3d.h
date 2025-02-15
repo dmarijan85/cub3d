@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/07 18:40:44 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/15 14:53:58 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@
 
 # define PI 3.14159265358979323846
 
+typedef enum s_bts
+{
+	NONE = -1,
+	EAST,
+	NORTH,
+	WEST,
+	SOUTH,
+}				t_bts;
+
 typedef struct s_coord
 {
 	int				x;
@@ -40,6 +49,7 @@ typedef struct s_fcoord
 typedef struct s_square
 {
 	char		*no;
+	int			iliar;
 	char		*so;
 	char		*we;
 	char		*ea;
@@ -56,11 +66,16 @@ typedef struct s_square
 	int			pnbr;
 	float		angle;
 	float		*cone;
+	int			*bts;
+	int			*liar;
 	mlx_t		*window;
 	mlx_image_t	*floppatron;
 	int			winheight;
 	int			winwidth;
-	int			tempwall[3];
+	int			nwall[3];
+	int			swall[3];
+	int			wwall[3];
+	int			ewall[3];
 }				t_square;
 
 void		minecraft(t_square *sq);
