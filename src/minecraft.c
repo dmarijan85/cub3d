@@ -15,7 +15,6 @@
 void	minecraft(t_square *sq)
 {
 	int	i;
-	int	*liar;
 
 	i = 0;
 	sq->no = NULL;
@@ -48,10 +47,10 @@ void	minecraft(t_square *sq)
 	sq->swall[0] = 200;
 	sq->ewall[1] = 200;
 	i = 0;
+	sq->liar = malloc((sq->winwidth + 1) * sizeof(int));
 	while (i < sq->winwidth)
 	{
-		liar = malloc((sq->winwidth + 1) * sizeof(int));
-		liar[i] = -1;
+		sq->liar[i] = -1;
 		i++;
 	}
 }

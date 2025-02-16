@@ -260,6 +260,7 @@ void	ft_bts(t_square *sq, float x, float y, float i, float distance)
 	if ((absf(x - roundf(x)) <= 0.05) && (absf(y - roundf(y)) <= 0.05) && absf(distance - sq->cone[(int)i-1]) < 0.1)
 	{
 		sq->liar[sq->iliar] = (int)i;
+		sq->bts[(int)i] = NONE;
 		return ;
 	}
 	decx = x / roundf(x);

@@ -53,10 +53,6 @@ void	die(char *errmsg, t_square *sq, int fd)
 	free(sq->ea);
 	free(sq->we);
 	free(sq->so);
-	free(sq->swall);
-	free(sq->nwall);
-	free(sq->ewall);
-	free(sq->wwall);
 	if (sq->gnl)
 		get_free(&sq->gnl);
 	array_free(sq->map);

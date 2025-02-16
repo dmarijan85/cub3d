@@ -55,18 +55,56 @@ void	the_brutalist(t_square *sq, int i, mlx_image_t *wall)
 		return ;
 }
 
+int		highest(int *count)
+{
+	int	i;
+	int	highest;
+	int	highesti;
+
+	i = 0;
+	highest = count[i];
+	highesti = i;
+	while (i < 4)
+	{
+		if (count[i] > highest)
+		{
+			highest = count[i];
+			highesti = i;
+		}
+		i++;
+	}
+	free(count);
+	return (NORTH);
+	if (highesti == 0)
+		return (EAST);
+	else if (highesti == 1)
+		return (NORTH);
+	else if (highesti == 2)
+		return (WEST);
+	else if (highesti == 3)
+		return (SOUTH);
+}
+
 int		ft_smoothlikebutter(t_square *sq, int liar)
 {
 	float	liardistance;
 	int		i;
+	int		*count;
 
 	i = -15;
+	count = malloc(4 * sizeof(int));
+	count[WEST] = 0;
+	count[NORTH] = 0;
+	count[SOUTH] = 0;
+	count[EAST] = 0;
 	liardistance = sq->cone[liar];
 	while (i < 15)
 	{
-		if ()
+		if (liar + i < sq->winwidth && liar + i > 0 && absf(liardistance - sq->cone[liar + i]) < 2 && sq->bts[liar + i] != NONE)
+			count[sq->bts[liar + i]]++;
 		i++;
 	}
+	return (highest(count));
 }
 
 //build the wall!!!
@@ -77,9 +115,9 @@ void	trump_deluxe(t_square *sq)
 
 	wall = mlx_new_image(sq->window, sq->winwidth, sq->winheight);
 	i = 0;
-	while (sq->liar[i] != -1)
+	while (i < sq->winwidth)
 	{
-		sq->bts[sq->liar[i]] = ft_smoothlikebutter(sq->liar[i]);
+		sq->bts[sq->liar[i]] = ft_smoothlikebutter(sq, sq->liar[i]);
 		i++;
 	}
 	i = 0;
