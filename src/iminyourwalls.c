@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:11:02 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/15 15:00:11 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/17 13:36:53 by dmarijan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,56 +55,123 @@ void	the_brutalist(t_square *sq, int i, mlx_image_t *wall)
 		return ;
 }
 
-int		highest(int *count)
+bool	diffsign(float	one, float two)
 {
-	int	i;
-	int	highest;
-	int	highesti;
-
-	i = 0;
-	highest = count[i];
-	highesti = i;
-	while (i < 4)
-	{
-		if (count[i] > highest)
-		{
-			highest = count[i];
-			highesti = i;
-		}
-		i++;
-	}
-	free(count);
-	return (NORTH);
-	if (highesti == 0)
-		return (EAST);
-	else if (highesti == 1)
-		return (NORTH);
-	else if (highesti == 2)
-		return (WEST);
-	else if (highesti == 3)
-		return (SOUTH);
+	if ((one > 0 && two < 0) || (one < 0 && two > 0))
+		return (true);
+	return (false);
 }
 
-int		ft_smoothlikebutter(t_square *sq, int liar)
+float	slopers(t_square *sq, int i)
 {
-	float	liardistance;
-	int		i;
-	int		*count;
+	float	height;
+	float	theight;
+	float	slope;
 
-	i = -15;
-	count = malloc(4 * sizeof(int));
-	count[WEST] = 0;
-	count[NORTH] = 0;
-	count[SOUTH] = 0;
-	count[EAST] = 0;
-	liardistance = sq->cone[liar];
-	while (i < 15)
+	height = ((0.75 * sq->winheight) / (sq->cone[i] * tan(dtr(60.0 / 2))));
+	theight = ((0.75 * sq->winheight) / (sq->cone[i+1] * tan(dtr(60.0 / 2))));
+	if (height <= 0 || theight <= 0)
+		return (1);
+	slope = 1 / (theight - height);
+	return (slope);
+}
+
+void	flag_liars(t_square *sq, int i)
+{
+	int		*liar;
+	int		j;
+	
+	j = 0;
+	if ((sq->cone[i + 1] == -1) || diffsign(slopers(sq, i), slopers(sq, i - 1)))
 	{
-		if (liar + i < sq->winwidth && liar + i > 0 && absf(liardistance - sq->cone[liar + i]) < 2 && sq->bts[liar + i] != NONE)
-			count[sq->bts[liar + i]]++;
+		liar = malloc((sq->iliar + 2) * sizeof(int));
+		while (j < sq->iliar && sq->liarflag)
+		{
+			liar[j] = sq->liar[j];
+			j++;
+		}
+		liar[j] = i;
+		liar[j + 1] = -1;
+		if (sq->liarflag)
+		{
+			free(sq->liar);
+			sq->liarflag = false;
+		}
+		sq->liar = liar;
+		sq->iliar++;
+		sq->liarflag = true;
+		printf("outliar number %i is: %i\n slopeleft: %f\n sloperght %f\n\n", sq->iliar-1, i, slopers(sq, i-1), slopers(sq, i));
+	}
+}
+
+int		group_avg(t_square *sq, int *i)
+{
+	float	average;
+	int		j;
+
+	j = 1;
+	average = sq->liar[*i];
+	while (sq->liar[(*i) + 1] != -1 && sq->liar[(*i) + 1] - sq->liar[*i] <= 20)
+	{
+		j++;
+		average += sq->liar[(*i) + 1];
+		*i += 1;
+	}
+	return (roundf(average / j));
+}
+
+void	group_liars(t_square *sq)
+{
+	int	*newliars;
+	int	i;
+	int	newsize;
+	int	j;
+
+	i = 0;
+	newsize = 0;
+	while (sq->liar[i + 1] != -1 && sq->liar[i + 1] - sq->liar[i] <= 20)
+	{
+		i++;
+		newsize++;
+	}
+	i = 0;
+	newliars = malloc((newsize + 1) * sizeof(int));
+	j = 0;
+	while (sq->liar[i] != -1 && j < newsize)
+	{
+		newliars[j] = group_avg(sq, &i);
+		j++;
 		i++;
 	}
-	return (highest(count));
+	newliars[newsize] = -1;
+	free(sq->liar);
+	sq->liar = newliars;
+}
+
+void	paintoncoords(t_square *sq, int start, int finish, int colour)
+{
+	int	i;
+
+	printf("my start %i, my finish %i, my colour %i\n\n", start, finish, colour);
+	i = start;
+	while (i <= finish)
+		sq->bts[i++] = colour;
+}
+
+//we take the center point of the group to decide the colour of the wall
+void	artisticshotgunning(t_square *sq)
+{
+	int	i;
+
+	i = 0;
+	while (sq->liar[i] != -1)
+	{
+		if (i == 0)
+			paintoncoords(sq, 0, sq->liar[i], sq->bts[sq->liar[i] / 2]);
+		else
+			paintoncoords(sq, sq->liar[i - 1], sq->liar[i], sq->bts[(sq->liar[i] + sq->liar[i - 1]) / 2]);
+		i++;
+	}
 }
 
 //build the wall!!!
@@ -114,13 +181,23 @@ void	trump_deluxe(t_square *sq)
 	mlx_image_t	*wall;
 
 	wall = mlx_new_image(sq->window, sq->winwidth, sq->winheight);
-	i = 0;
-	while (i < sq->winwidth)
+	i = 1;
+	sq->iliar = 0;
+	while (i + 1 < sq->winwidth)
 	{
-		sq->bts[sq->liar[i]] = ft_smoothlikebutter(sq, sq->liar[i]);
+		if (sq->cone[i] != -1)
+			flag_liars(sq, i);
 		i++;
 	}
+	group_liars(sq);
 	i = 0;
+//	while (sq->liar[i] != -1)
+//	{
+//		printf("newliar in %i is %i\n\n", i, sq->liar[i]);
+//		i++;
+//	}
+//	i = 0;
+//	artisticshotgunning(sq);
 	while (i < sq->winwidth)
 	{
 		the_brutalist(sq, i, wall);

@@ -28,11 +28,11 @@ void	minecraft(t_square *sq)
 	sq->player = '\0';
 	sq->centerangle = 0;
 	sq->pnbr = 0;
+	sq->liarflag = false;
 	sq->winheight = 900;
 	sq->winwidth = 1200;
 	sq->coneflag = false;
 	sq->floppatron = NULL;
-	sq->iliar = 0;
 	while (i < 3)
 	{
 		sq->fc[i] = 0;
@@ -46,11 +46,4 @@ void	minecraft(t_square *sq)
 	sq->nwall[2] = 200;
 	sq->swall[0] = 200;
 	sq->ewall[1] = 200;
-	i = 0;
-	sq->liar = malloc((sq->winwidth + 1) * sizeof(int));
-	while (i < sq->winwidth)
-	{
-		sq->liar[i] = -1;
-		i++;
-	}
 }

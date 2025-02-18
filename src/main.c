@@ -108,7 +108,6 @@ void	extend_map(char *str, t_square *sq)
 	sq->map = newmap;
 }
 
-/*that weird tmp - 1 size is for newline that gnl returns*/
 void	compute_map(char *str, t_square *sq, int fd)
 {
 	int		i;
@@ -382,7 +381,6 @@ int	main(int argc, char **argv)
 	mlx_loop(sq.window);
 	mlx_terminate(sq.window);
 	free(sq.cone);
-	free(sq.liar);
 	free(sq.bts);
 	die("Program finished", &sq, 0);
 }

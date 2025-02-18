@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:48:56 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/15 14:55:32 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/18 16:28:51 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	pos_pepe_x(float angle, float *x, float *y)
 	float	slope;
 	float	step;
 
-	slope = tanf(dtr(angle));
-	step = 0.42;
+        slope = tanf(dtr(angle));
+        step = 0.42;
 	if (angle < 90 || angle > 270)
 		*x += step;
 	else if (angle > 90 && angle < 270)
@@ -252,17 +252,11 @@ void	move_y(t_square *sq, float step, float *x, float *y)
 		*x -= absf(slope * step);
 }
 
-void	ft_bts(t_square *sq, float x, float y, float i, float distance)
+void	ft_bts(t_square *sq, float x, float y, float i)
 {
 	float	decx;
 	float	decy;
 
-	if ((absf(x - roundf(x)) <= 0.05) && (absf(y - roundf(y)) <= 0.05) && absf(distance - sq->cone[(int)i-1]) < 0.1)
-	{
-		sq->liar[sq->iliar] = (int)i;
-		sq->bts[(int)i] = NONE;
-		return ;
-	}
 	decx = x / roundf(x);
 	decy = y / roundf(y);
 	if (absf(x - roundf(x)) < absf(y - roundf(y)))
@@ -308,7 +302,7 @@ float	ft_roundingit(t_square *sq, float *x, float *y, float i)
 		distance = (sqrt(abspwr(absf(*x) - sq->pcoord.x) + abspwr(absf(*y) - sq->pcoord.y)));
 	if (distance)
 	{
-		ft_bts(sq, *x, *y, i, distance);
+		ft_bts(sq, *x, *y, i);
 		printf("x coord y coord: %f %f\n\n", *x, *y);
 	}
 	return (distance);
@@ -364,7 +358,6 @@ void	xrayingit(t_square *sq)
 	float	*cone;
 	int		*bts;
 
-	sq->iliar = 0;
 	if (sq->coneflag == false)
 	{
 		cone = malloc((sq->winwidth + 1) * sizeof(float));

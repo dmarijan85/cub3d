@@ -68,6 +68,7 @@ typedef struct s_square
 	float		*cone;
 	int			*bts;
 	int			*liar;
+	bool		liarflag;
 	mlx_t		*window;
 	mlx_image_t	*floppatron;
 	int			winheight;
