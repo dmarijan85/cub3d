@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/15 14:53:58 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/02/22 15:30:58 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,5 @@ float		dtr(float degrees);
 void		hook(void *param);
 uint32_t	get_colour(int *color);
 float		absf(float num);
-void		move_y(t_square *sq, float angle, float *x, float *y);
-void		move_x(t_square *sq, float angle, float *x, float *y);
-
 
 #endif

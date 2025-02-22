@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:11:02 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/17 13:36:53 by dmarijan         ###   ########.fr       */
+/*   Updated: 2025/02/22 17:00:11 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ float	slopers(t_square *sq, int i)
 
 	height = ((0.75 * sq->winheight) / (sq->cone[i] * tan(dtr(60.0 / 2))));
 	theight = ((0.75 * sq->winheight) / (sq->cone[i+1] * tan(dtr(60.0 / 2))));
-	if (height <= 0 || theight <= 0)
-		return (1);
 	slope = 1 / (theight - height);
 	return (slope);
 }
@@ -82,7 +80,7 @@ void	flag_liars(t_square *sq, int i)
 	int		j;
 	
 	j = 0;
-	if ((sq->cone[i + 1] == -1) || diffsign(slopers(sq, i), slopers(sq, i - 1)))
+	if ((sq->cone[i + 1] == -1) || sq->cone[i - 1] == -1 || diffsign(slopers(sq, i), slopers(sq, i - 1)))
 	{
 		liar = malloc((sq->iliar + 2) * sizeof(int));
 		while (j < sq->iliar && sq->liarflag)
@@ -100,7 +98,7 @@ void	flag_liars(t_square *sq, int i)
 		sq->liar = liar;
 		sq->iliar++;
 		sq->liarflag = true;
-		printf("outliar number %i is: %i\n slopeleft: %f\n sloperght %f\n\n", sq->iliar-1, i, slopers(sq, i-1), slopers(sq, i));
+//		printf("outliar number %i is: %i\n slopeleft: %f\n sloperght %f\n\n", sq->iliar-1, i, slopers(sq, i-1), slopers(sq, i));
 	}
 }
 
@@ -152,7 +150,6 @@ void	paintoncoords(t_square *sq, int start, int finish, int colour)
 {
 	int	i;
 
-	printf("my start %i, my finish %i, my colour %i\n\n", start, finish, colour);
 	i = start;
 	while (i <= finish)
 		sq->bts[i++] = colour;
@@ -189,8 +186,9 @@ void	trump_deluxe(t_square *sq)
 			flag_liars(sq, i);
 		i++;
 	}
-	group_liars(sq);
 	i = 0;
+//	group_liars(sq);
+//	i = 0;
 //	while (sq->liar[i] != -1)
 //	{
 //		printf("newliar in %i is %i\n\n", i, sq->liar[i]);
