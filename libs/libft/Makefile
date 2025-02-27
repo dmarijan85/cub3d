@@ -6,7 +6,7 @@
 #    By: mclaver- <mclaver-@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/25 17:50:46 by mclaver-          #+#    #+#              #
-#    Updated: 2024/07/03 13:43:23 by mclaver-         ###   ########.fr        #
+#    Updated: 2025/02/25 11:53:07 by dmarijan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ $(NAME): $(OBJS) $(LIBOBJS) $(HEADERS)
 
 clean:
 	@rm -f $(OBJS) $(BOBJS)
+	@rm -f *.d
 	@make -C libft clean
 
 fclean: clean
