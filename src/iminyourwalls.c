@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:11:02 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/22 17:00:11 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/03 18:44:07 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	the_brutalist(t_square *sq, int i, mlx_image_t *wall)
 
 	if (sq->cone[i] == -1)
 		return ;
-	height = ((0.75 * sq->winheight) / (sq->cone[i] * tan(dtr(60.0 / 2))));
+	height = ((sq->winheight) / (sq->cone[i]));
 	if (height > 0 && sq->bts[i] == NORTH)
 		ft_putcolumn(sq->nwall, wall, height, i);
 	else if (height > 0 && sq->bts[i] == SOUTH)

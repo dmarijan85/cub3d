@@ -6,12 +6,12 @@
 #    By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/10 14:39:35 by mclaver-          #+#    #+#              #
-#    Updated: 2025/02/22 19:26:44 by dmarijan         ###   ########.fr        #
+#    Updated: 2025/03/03 18:30:43 by dmarijan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Program Name
-NAME = cub3d
+NAME = cub3D
 
 # Dirs
 SRC_DIR = src

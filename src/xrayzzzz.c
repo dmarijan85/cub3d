@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:48:56 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/27 15:19:43 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/03 18:45:19 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,6 +375,7 @@ void	coneheads(t_square *sq)
 {
 	float	i;
 	float	angle;
+	float	tdist;
 
 	i = 0;
 	while (i < sq->winwidth)
@@ -385,7 +386,8 @@ void	coneheads(t_square *sq)
 		else if (angle >= 360)
 			angle -= 360;
 		sq->angle = angle;
-		sq->cone[(int)i] = zeus(sq, i);
+		tdist = zeus(sq, i);
+		sq->cone[(int)i] = tdist * cos(dtr(sq->angle - (sq->centerangle)));
 		i++;
 	}
 }
