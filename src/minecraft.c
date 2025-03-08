@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:08:36 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/15 14:54:14 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/08 18:43:19 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	minecraft(t_square *sq)
 	sq->player = '\0';
 	sq->centerangle = 0;
 	sq->pnbr = 0;
-	sq->liarflag = false;
 	sq->winheight = 900;
 	sq->winwidth = 1200;
 	sq->coneflag = false;
@@ -37,13 +36,6 @@ void	minecraft(t_square *sq)
 	{
 		sq->fc[i] = 0;
 		sq->cc[i] = 0;
-		sq->nwall[i] = 50;
-		sq->swall[i] = 50;
-		sq->ewall[i] = 50;
-		sq->wwall[i] = 50;
 		i++;
 	}
-	sq->nwall[2] = 200;
-	sq->swall[0] = 200;
-	sq->ewall[1] = 200;
 }

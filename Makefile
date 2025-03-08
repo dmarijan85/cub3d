@@ -6,7 +6,7 @@
 #    By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/10 14:39:35 by mclaver-          #+#    #+#              #
-#    Updated: 2025/03/03 18:30:43 by dmarijan         ###   ########.fr        #
+#    Updated: 2025/03/08 19:41:36 by dmarijan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ MLX42 = build/libmlx42.a
 # Compiler and flags
 CC = gcc
 MLXFLAGS = -Ilibs/MLX42/include -ldl -lglfw -pthread -lm
-CFLAGS = -ffast-math -Wall -Werror -Wextra -Ofast -no-pie -g #-fsanitize=address
+CFLAGS = -ffast-math -Wall -Werror -Wextra -Ofast -no-pie -g -fsanitize=address
 
 # Rules
 all: $(NAME)

@@ -6,11 +6,12 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/15 14:22:56 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/08 19:56:02 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <unistd.h>
 
 void	array_free(char **str)
 {
@@ -209,16 +210,17 @@ int	veggietales(char **argv, t_square *sq)
 					str += 2;
 					while (ft_isspace(*str))
 						str++;
-					sq->no = ft_substr(str, 0, ft_strlen(str));
+					sq->no = ft_substr(str, 0, ft_strlen(str) - 1);
 					if (!isemptyline(sq->no))
 						sq->infonumber++;
+					
 				}
 				else if (!ft_strncmp(str, "WE ", 3) || !ft_strncmp(str, "WE\t", 3))
 				{
 					str += 2;
 					while (ft_isspace(*str))
 						str++;
-					sq->we = ft_substr(str, 0, ft_strlen(str));
+					sq->we = ft_substr(str, 0, ft_strlen(str) - 1);
 					if (!isemptyline(sq->we))
 						sq->infonumber++;
 				}
@@ -227,7 +229,7 @@ int	veggietales(char **argv, t_square *sq)
 					str += 2;
 					while (ft_isspace(*str))
 						str++;
-					sq->ea = ft_substr(str, 0, ft_strlen(str));
+					sq->ea = ft_substr(str, 0, ft_strlen(str) - 1);
 					if (!isemptyline(sq->ea))
 						sq->infonumber++;
 				}
@@ -236,7 +238,7 @@ int	veggietales(char **argv, t_square *sq)
 					str += 2;
 					while (ft_isspace(*str))
 						str++;
-					sq->so = ft_substr(str, 0, ft_strlen(str));
+					sq->so = ft_substr(str, 0, ft_strlen(str) - 1);
 					if (!isemptyline(sq->so))
 						sq->infonumber++;
 				}
@@ -361,6 +363,25 @@ void	mapdeluxe(t_square *sq)
 	waterbucket(sq, j, i);
 }
 
+void	legalize_walls(t_square *sq)
+{
+	if (!access(sq->no, R_OK) && !access(sq->no, R_OK) && !access(sq->no, R_OK) && !access(sq->no, R_OK))
+	{
+		sq->ntext = mlx_load_png(sq->no);
+		sq->stext = mlx_load_png(sq->so);
+		sq->etext = mlx_load_png(sq->ea);
+		sq->wtext = mlx_load_png(sq->we);
+		if (!sq->ntext || !sq->stext || !sq->wtext || !sq->etext)
+			die("Error loading textures", sq, 0);
+		sq->nwall = mlx_texture_to_image(sq->window, sq->ntext);
+		sq->ewall = mlx_texture_to_image(sq->window, sq->etext);
+		sq->wwall = mlx_texture_to_image(sq->window, sq->wtext);
+		sq->swall = mlx_texture_to_image(sq->window, sq->stext);
+	}
+	else
+		die("Mf sent me bogus textures :skull:", sq, 0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_square	sq;
@@ -375,12 +396,12 @@ int	main(int argc, char **argv)
 	veggietales(argv, &sq);
 	mapdeluxe(&sq);
 	picture_this(&sq);
+	legalize_walls(&sq);
 	xrayingit(&sq);
-	trump_deluxe(&sq);
+	//trump_deluxe(&sq);
 	mlx_loop_hook(sq.window, &hook, &sq);
 	mlx_loop(sq.window);
 	mlx_terminate(sq.window);
 	free(sq.cone);
-	free(sq.bts);
 	die("Program finished", &sq, 0);
 }

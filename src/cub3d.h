@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/22 15:30:58 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/08 20:21:12 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,35 +48,37 @@ typedef struct s_fcoord
 
 typedef struct s_square
 {
-	char		*no;
-	int			iliar;
-	char		*so;
-	char		*we;
-	char		*ea;
-	int			fc[3];
-	int			cc[3];
-	char		**map;
-	char		*gnl;
-	int			mapdepth;
-	int			infonumber;
-	char		player;
-	t_fcoord	pcoord;
-	float		centerangle;
-	bool		coneflag;
-	int			pnbr;
-	float		angle;
-	float		*cone;
-	int			*bts;
-	int			*liar;
-	bool		liarflag;
-	mlx_t		*window;
-	mlx_image_t	*floppatron;
-	int			winheight;
-	int			winwidth;
-	int			nwall[3];
-	int			swall[3];
-	int			wwall[3];
-	int			ewall[3];
+	char			*no;
+	char			*so;
+	char			*we;
+	char			*ea;
+	int				fc[3];
+	int				cc[3];
+	char			**map;
+	char			*gnl;
+	int				mapdepth;
+	int				infonumber;
+	char			player;
+	t_fcoord		pcoord; //player coords
+	float			centerangle;
+	bool			coneflag;
+	int				pnbr;
+	float			angle;
+	float			*cone;
+	mlx_t			*window;
+	mlx_image_t		*floppatron; //image instance that encompasses the entire fov
+	int				bts;
+	float			hit_coord; //x and y point where the last ray hit a wall
+	int				winheight;
+	int				winwidth;
+	mlx_texture_t	*ntext;
+	mlx_texture_t	*stext;
+	mlx_texture_t	*wtext;
+	mlx_texture_t	*etext;
+	mlx_image_t		*nwall;
+	mlx_image_t		*swall;
+	mlx_image_t		*wwall;
+	mlx_image_t		*ewall;
 }				t_square;
 
 void		minecraft(t_square *sq);
@@ -87,10 +89,11 @@ void		xrayingit(t_square *sq);
 void		die(char *errmsg, t_square *sq, int fd);
 void		picture_this(t_square *sq);
 void		trump_deluxe(t_square *sq);
-void		ft_putplane(int *rgb, mlx_image_t *image);
+void		ft_putplane(int *fcrgb, int *ccrgb, mlx_image_t *image);
 float		dtr(float degrees);
 void		hook(void *param);
 uint32_t	get_colour(int *color);
 float		absf(float num);
+void		the_brutalist(t_square *sq, int i, mlx_image_t *wall);
 
 #endif

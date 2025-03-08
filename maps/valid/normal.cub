@@ -1,13 +1,13 @@
-NO		 	 	 	 	 		 placeholder
+NO		 	 	 	 	 		 textures/supernario.png
 
-WE placeholder2
+WE textures/wariowhere.png
 
-SO placeholder3
+SO textures/fiShy.png
 
-EA placeholder4
+EA textures/mr.earnest.png
 
-F 220,100,0
-C 250,30,0
+F 130,150,0
+C 25,300,77
 
 
 

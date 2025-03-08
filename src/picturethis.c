@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:22:24 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/02/07 17:44:43 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/08 20:10:20 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ uint32_t	get_colour(int *color)
 	return (get_acolour(255, color[0], color[1], color[2]));
 }
 
-void	ft_putplane(int *rgb, mlx_image_t *image)
+void	ft_putplane(int *fcrgb, int *ccrgb, mlx_image_t *image)
 {
 	uint32_t	i;
 	uint32_t	y;
@@ -33,7 +33,10 @@ void	ft_putplane(int *rgb, mlx_image_t *image)
 		y = 0;
 		while (y < image->height)
 		{
-			mlx_put_pixel(image, i, y, get_colour(rgb));
+			if (y < image->height / 2)
+				mlx_put_pixel(image, i, y, get_colour(ccrgb));
+			else
+				mlx_put_pixel(image, i, y, get_colour(fcrgb));
 			y++;
 		}
 		i++;
@@ -43,17 +46,14 @@ void	ft_putplane(int *rgb, mlx_image_t *image)
 void	picture_this(t_square *sq)
 {
 	mlx_t		*window;
-	mlx_image_t	*floor;
-	mlx_image_t	*ceiling;
+	mlx_image_t	*wall;
 
 	window = mlx_init(sq->winwidth, sq->winheight, "cub3d", false);
 	if (!window)
 		die("Window blew up...", sq, 0);
-	floor = mlx_new_image(window, sq->winwidth, sq->winheight / 2);
-	ceiling = mlx_new_image(window, sq->winwidth, sq->winheight / 2);
-	mlx_image_to_window(window, ceiling, 0, 0);
-	mlx_image_to_window(window, floor, 0, sq->winheight / 2);
-	ft_putplane(sq->fc, floor);
-	ft_putplane(sq->cc, ceiling);
+	wall = mlx_new_image(window, sq->winwidth, sq->winheight);
+	mlx_image_to_window(window, wall, 0, 0);
+	ft_putplane(sq->fc, sq->cc, wall);
 	sq->window = window;
+	sq->floppatron = wall;
 }
