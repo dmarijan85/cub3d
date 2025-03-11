@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 18:48:56 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/08 20:43:14 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/11 16:25:21 by mclaver-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,24 @@ float	ft_round(float nbr)
 	return (whole + (nbr / 10));
 }
 
-/*
-void	set_hit(t_square *sq, float x, float y)
+void	ft_gabagool(t_square *sq, float pooop, int walltype)
 {
-	if (x != (int)x)
-	{
-		if (sq->bts == WEST);
-		sq->hit_coord = (x - (int)x) *  ;
-	}
-		else if (y != (int)y)
-		sq->hit_coord = y;
-}*/
+	float	wallsize;
+
+	wallsize = 0;
+	if (walltype == WEST)
+		wallsize = sq->wwall->width;
+	else if (walltype == EAST)
+		wallsize = sq->ewall->width;
+	else if (walltype == NORTH)
+		wallsize = sq->nwall->width;
+	else if (walltype == SOUTH)
+		wallsize = sq->swall->width;
+	sq->bts = walltype;
+	sq->hit_coord = (pooop - (int)pooop) * wallsize;
+	if (walltype == WEST || walltype == SOUTH)
+		sq->hit_coord = wallsize - sq->hit_coord - 1;
+}
 
 void	ft_bts(t_square *sq, float x, float y, float i)
 {
@@ -83,21 +90,17 @@ void	ft_bts(t_square *sq, float x, float y, float i)
 	else if (x == (int)x)
 	{
 		if (sq->angle > 90 && sq->angle < 270)
-			sq->bts = WEST;
+			ft_gabagool(sq, y, WEST);
 		else
-			sq->bts = EAST;
-		sq->hit_coord = (y - (int)y) * 500;
+			ft_gabagool(sq, y, EAST);
 	}
 	else if (y == (int)y)
 	{
 		if (sq->angle > 0 && sq->angle < 180)
-			sq->bts = NORTH;
+			ft_gabagool(sq, x, NORTH);
 		else
-			sq->bts = SOUTH;
-		sq->hit_coord = (x - (int)x) * 500;
+			ft_gabagool(sq, x, SOUTH);
 	}
-	if (sq->bts == WEST || sq->bts == SOUTH)
-		sq->hit_coord = 500 - sq->hit_coord - 1;
 }
 
 float	safe_rounder(float number, bool ceil)
