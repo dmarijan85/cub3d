@@ -6,132 +6,12 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/08 19:56:02 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/12 16:15:58 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <unistd.h>
-
-void	array_free(char **str)
-{
-	int	i;
-
-	i = 0;
-	if (str)
-	{
-		while (str[i])
-		{
-			ft_printf("%s\n", str[i]);
-			get_free(&str[i]);
-			i++;
-		}
-		if (str)
-			free(str);
-	}
-	str = NULL;
-}
-
-//errexit
-void	die(char *errmsg, t_square *sq, int fd)
-{
-	int	i;
-
-	i = 0;
-	if (errmsg)
-	{
-		ft_putstr_fd("Error\n", 2);
-		ft_putstr_fd(errmsg, 2);
-		ft_putstr_fd("\n", 2);
-	}
-	ft_printf("NO:%s, WE:%s, SO:%s, EA:%s\n", sq->no, sq->we, sq->so, sq->ea);
-	while (i < 3)
-	{
-		ft_printf("CC[%i]:%i, FC[%i]:%i\n", i, sq->cc[i], i, sq->fc[i]);
-		i++;
-	}
-	free(sq->no);
-	free(sq->ea);
-	free(sq->we);
-	free(sq->so);
-	if (sq->gnl)
-		get_free(&sq->gnl);
-	array_free(sq->map);
-	if (fd)
-		close(fd);
-	exit(1);
-}
-
-int	ft_isspace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\n')
-		return (1);
-	return (0);
-}
-
-int	isemptyline(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && ft_isspace(str[i]))
-		i++;
-	if (!str[i])
-		return (1);
-	return (0);
-}
-
-int	ft_size(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i] && map[i][0])
-		i++;
-	return (i);
-}
-
-void	extend_map(char *str, t_square *sq)
-{
-	int		i;
-	char	**newmap;
-
-	i = 0;
-	newmap = malloc((ft_size(sq->map) + 2) * sizeof(char *));
-	while (sq->map[i])
-	{
-		newmap[i] = ft_strdup(sq->map[i]);
-		i++;
-	}
-	array_free(sq->map);
-	newmap[i] = str;
-	newmap[i + 1] = NULL;
-	sq->map = newmap;
-}
-
-void	compute_map(char *str, t_square *sq, int fd)
-{
-	int		i;
-	bool	flag;
-	char	*tmp;
-
-	flag = false;
-	i = 0;
-	tmp = malloc((ft_strlen(str)) * sizeof(char));
-	tmp[0] = '\0';
-	ft_strlcat(tmp, str, ft_strlen(str));
-	free(str);
-	while (tmp[i])
-	{
-		if (tmp[i] == '0' || tmp[i] == '1')
-			flag = true;
-		i++;
-	}
-	if (flag)
-		extend_map(tmp, sq);
-	else
-		die("No map present in file?!", sq, fd);
-}
 
 //parser
 int	veggietales(char **argv, t_square *sq)
@@ -263,132 +143,13 @@ int	iscub(char *file)
 	return (1);
 }
 
-int	get_longest_line(char **map)
-{
-	int	longest;
-	int	i;
-
-	i = 0;
-	longest = 0;
-	while (map[i])
-	{
-		if ((int)ft_strlen(map[i]) > longest)
-			longest = ft_strlen(map[i]);
-		i++;
-	}
-	return (longest);
-}
-
-void	check_replace(char *line, int longest, t_square *sq, int pos)
-{
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	if ((int)ft_strlen(line) < longest)
-	{
-		tmp = malloc((longest + 1) * sizeof(char));
-		if (!tmp)
-			die("Malloc fail", sq, 0);
-		while (i < (int)ft_strlen(line))
-		{
-			tmp[i] = line[i];
-			i++;
-		}
-		while (i < longest)
-		{
-			tmp[i] = ' ';
-			i++;
-		}
-		tmp[i] = '\0';
-		free(line);
-		sq->map[pos] = tmp;
-	}
-}
-
-void	waterbucket(t_square *sq, int x, int y)
-{
-	t_coord	player;
-	char	**tmp;
-	int		i;
-
-	if (!sq->map || !*sq->map)
-		die("Holy shit where is the map buddy?!?!", sq, 0);
-	i = 0;
-	player.x = x;
-	player.y = y;
-	tmp = malloc((ft_size(sq->map) + 1) * sizeof(char *));
-	while (i < ft_size(sq->map))
-	{
-		tmp[i] = ft_strdup(sq->map[i]);
-		i++;
-	}
-	tmp[i] = NULL;
-	if (flood_fill(sq, tmp, player) || !sq->player || sq->pnbr != 1)
-	{
-		array_free(tmp);
-		if (sq->pnbr != 1)
-			printf("pnbr = %i\n", sq->pnbr);
-		die("Holy shit lois the map is illegal as fuck bro", sq, 0);
-	}
-	array_free(tmp);
-}
-
-void	mapdeluxe(t_square *sq)
-{
-	int	longest;
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	longest = get_longest_line(sq->map);
-	while (sq->map[i])
-	{
-		check_replace(sq->map[i], longest, sq, i);
-		i++;
-	}
-	i = 0;
-	while (sq->map[i] && sq->map[i][j] != '0')
-	{
-		j = 0;
-		while (sq->map[i][j] && sq->map[i][j] != '0')
-			j++;
-		if (sq->map[i][j] == '0')
-			break ;
-		i++;
-	}
-	if (!sq->map[i] || !sq->map[i][j])
-		die("Holy shit lois this map doesnt even have a single floor!", sq, 0);
-	waterbucket(sq, j, i);
-}
-
-void	legalize_walls(t_square *sq)
-{
-	if (!access(sq->no, R_OK) && !access(sq->no, R_OK) && !access(sq->no, R_OK) && !access(sq->no, R_OK))
-	{
-		sq->ntext = mlx_load_png(sq->no);
-		sq->stext = mlx_load_png(sq->so);
-		sq->etext = mlx_load_png(sq->ea);
-		sq->wtext = mlx_load_png(sq->we);
-		if (!sq->ntext || !sq->stext || !sq->wtext || !sq->etext)
-			die("Error loading textures", sq, 0);
-		sq->nwall = mlx_texture_to_image(sq->window, sq->ntext);
-		sq->ewall = mlx_texture_to_image(sq->window, sq->etext);
-		sq->wwall = mlx_texture_to_image(sq->window, sq->wtext);
-		sq->swall = mlx_texture_to_image(sq->window, sq->stext);
-	}
-	else
-		die("Mf sent me bogus textures :skull:", sq, 0);
-}
-
 int	main(int argc, char **argv)
 {
 	t_square	sq;
 
 	minecraft(&sq);
 	if (argc != 2)
-		die("Invalid number of arguments", &sq, 0);
+		die("Invalid number of arguments! <./cub3D 'mappath'>", &sq, 0);
 	if (iscub(argv[1]) == 0)
 		die("Invalid argument (<name>.cub)", &sq, 0);
 	sq.map = malloc(1 * sizeof(char *));
@@ -398,7 +159,6 @@ int	main(int argc, char **argv)
 	picture_this(&sq);
 	legalize_walls(&sq);
 	xrayingit(&sq);
-	//trump_deluxe(&sq);
 	mlx_loop_hook(sq.window, &hook, &sq);
 	mlx_loop(sq.window);
 	mlx_terminate(sq.window);

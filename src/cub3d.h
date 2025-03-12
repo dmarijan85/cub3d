@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/12 15:51:49 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/12 16:23:22 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,12 @@ void		jarvis_x(float angle, float *x, float *y);
 void		jarvis_y(float angle, float *x, float *y);
 float		safe_rounder(float number, bool ceil);
 void		handle_pope(t_square *sq, float *x, float *y);
+void		compute_map(char *str, t_square *sq, int fd);
+void		legalize_walls(t_square *sq);
+int			isemptyline(char *str);
+void		mapdeluxe(t_square *sq);
+void		check_replace(char *line, int longest, t_square *sq, int pos);
+void		waterbucket(t_square *sq, int x, int y);
+void		array_free(char **str);
 
 #endif
