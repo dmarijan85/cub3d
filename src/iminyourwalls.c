@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:11:02 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/08 20:39:18 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/12 16:03:16 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,27 @@ uint32_t	get_pixel_info(mlx_image_t *texture, int pixel_index)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-void	draw_texture(t_square *sq, mlx_image_t *texture, int i, mlx_image_t *wall)
+void	draw_texture(t_square *sq, mlx_image_t *text, int i, mlx_image_t *wall)
 {
 	double	tex_pos;
 	int		y;
-	int		pixel_index;
 	float	height;
 	float	y_step;
 	int		tex_y;
 
 	height = ((sq->winheight) / (sq->cone[i]));
-	y_step = (double)texture->height / height;
+	y_step = (double)text->height / height;
 	y = (wall->height - height) / 2;
 	tex_pos = 0;
 	while (height > 0)
 	{
 		if (y > sq->winheight)
 			break ;
-		tex_y = (int)tex_pos % texture->height;
+		tex_y = (int)tex_pos % text->height;
 		tex_pos += y_step;
-		pixel_index = (tex_y * texture->width + (int)sq->hit_coord) * 4;
 		if (y >= 0)
-			mlx_put_pixel(wall, i, y, get_pixel_info(texture, pixel_index));
+			mlx_put_pixel(wall, i, y, get_pixel_info(text, \
+							(tex_y * text->width + (int)sq->hit_coord) * 4));
 		y++;
 		height--;
 	}

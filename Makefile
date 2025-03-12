@@ -6,7 +6,7 @@
 #    By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/10 14:39:35 by mclaver-          #+#    #+#              #
-#    Updated: 2025/03/08 19:41:36 by dmarijan         ###   ########.fr        #
+#    Updated: 2025/03/12 15:43:53 by dmarijan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,14 @@ SRC_FILES = src/main.c			\
 			src/xrayzzzz.c		\
 			src/picturethis.c	\
 			src/iminyourwalls.c	\
-			src/jarvishookthis.c
+			src/jarvishookthis.c\
+			src/custommath.c	\
+			src/moves.c			\
+			src/moves_utils.c	\
+			src/pmovement.c		\
+			src/utils.c			\
+
+HEADERS =	src/cub3d.h
 
 OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -43,7 +50,7 @@ CFLAGS = -ffast-math -Wall -Werror -Wextra -Ofast -no-pie -g -fsanitize=address
 # Rules
 all: $(NAME)
 
-$(NAME): $(OBJ_FILES) $(LIBFT) $(MLX42) Makefile
+$(NAME): $(OBJ_FILES) $(HEADERS) $(LIBFT) $(MLX42) Makefile
 	@$(CC) $(CFLAGS) $(OBJ_FILES) $(LIBFT) $(MLX42) $(MLXFLAGS) -o $(NAME)
 	@echo "Executable cub3d created!"
 

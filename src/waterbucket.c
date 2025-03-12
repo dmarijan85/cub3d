@@ -6,7 +6,7 @@
 /*   By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:25:49 by mclaver-          #+#    #+#             */
-/*   Updated: 2025/02/22 16:05:30 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/12 15:38:46 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,30 +80,6 @@ static int	flood_left(t_square *sq, char **map, t_coord player)
 			return (1);
 		if (flood_fill(sq, map, p))
 			return (1);
-	}
-	return (0);
-}
-
-int	isokay(t_square *sq, char c, t_coord player)
-{
-	if (c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == '0' || c == '1')
-	{
-		if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
-		{
-			sq->pnbr += 1;
-			sq->player = c;
-			if (c == 'E')
-				sq->centerangle = 0;
-			else if (c == 'N')
-				sq->centerangle = 90;
-			else if (c == 'W')
-				sq->centerangle = 180;
-			else if (c == 'S')
-				sq->centerangle = 270;
-			sq->pcoord.x = ((player.x) + 0.5);
-			sq->pcoord.y = ((player.y) + 0.5);
-		}
-		return (1);
 	}
 	return (0);
 }
