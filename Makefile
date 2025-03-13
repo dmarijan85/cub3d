@@ -6,7 +6,7 @@
 #    By: mclaver- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/10 14:39:35 by mclaver-          #+#    #+#              #
-#    Updated: 2025/03/12 16:23:53 by dmarijan         ###   ########.fr        #
+#    Updated: 2025/03/13 12:08:42 by dmarijan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ SRC_FILES = src/main.c			\
 			src/utils.c			\
 			src/map_utils.c		\
 			src/freemyman.c		\
-			src/parser_utils.c
+			src/parser_utils.c	\
+			src/eat_the_world.c
 
 HEADERS =	src/cub3d.h
 

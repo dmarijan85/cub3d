@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:11:15 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/12 16:12:03 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/13 11:44:21 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	legalize_walls(t_square *sq)
 {
-	if (!access(sq->no, R_OK) && !access(sq->no, R_OK) && !access(sq->no, R_OK) && !access(sq->no, R_OK))
+	if (!access(sq->no, R_OK) && !access(sq->no, R_OK) && !access(sq->no, R_OK) \
+		&& !access(sq->no, R_OK))
 	{
 		sq->ntext = mlx_load_png(sq->no);
 		sq->stext = mlx_load_png(sq->so);

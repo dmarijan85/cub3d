@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:06:04 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/12 16:07:10 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/13 11:43:54 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	ft_size(char **map)
 		i++;
 	return (i);
 }
+
 int	gonetoofar(t_fcoord player, float x, float y)
 {
 	if ((absf(player.x - x) >= 100) || (absf(player.y - y) >= 100))

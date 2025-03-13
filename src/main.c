@@ -6,14 +6,13 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:49 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/12 16:15:58 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/13 12:08:21 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <unistd.h>
 
-//parser
 int	veggietales(char **argv, t_square *sq)
 {
 	int		fd;
@@ -28,103 +27,8 @@ int	veggietales(char **argv, t_square *sq)
 		i = 0;
 		str = get_next_line(fd);
 		sq->gnl = str;
-		if (!str)
-		{
-			if (sq->infonumber != 6)
-				die ("Scoundrel! The map is fucking missing shit bro!!!", sq, fd);
-			close(fd);
-			return (0);
-		}
-		if (isemptyline(str))
-			get_free(&sq->gnl);
-		else
-		{
-			if (sq->infonumber == 6)
-				compute_map(str, sq, fd);
-			else
-			{
-				while (ft_isspace(*str))
-					str++;
-				if (!ft_strncmp(str, "F ", 2) || !ft_strncmp(str, "F\t", 2))
-				{
-					str++;
-					while (ft_isspace(*str))
-						str++;
-					while ((ft_isalnum(*str) || *str == ',') && i < 3)
-					{
-						while (ft_isalnum(*str))
-						{
-							sq->fc[i] *= 10;
-							sq->fc[i] += *str - '0';
-							str++;
-						}
-						str++;
-						if (sq->fc[i] < 0 || sq->fc[i] > 255)
-							die("Illegal floor RGB! (Should [0,255])", sq, fd);
-						i++;
-					}
-					sq->infonumber++;
-				}
-				else if (!ft_strncmp(str, "C " , 2) || !ft_strncmp(str, "C\t", 2))
-				{
-					str++;
-					while (ft_isspace(*str))
-						str++;
-					while ((ft_isalnum(*str) || *str == ',') && i < 3)
-					{
-						while (ft_isalnum(*str))
-						{
-							sq->cc[i] *= 10;
-							sq->cc[i] += *str - '0';
-							str++;
-						}
-						str++;
-						if (sq->cc[i] < 0 || sq->cc[i] > 255)
-							die("Illegal ceiling RGB! (Should be [0,255])", sq, fd);
-						i++;
-					}
-					sq->infonumber++;
-				}
-				else if (!ft_strncmp(str, "NO ", 3) || !ft_strncmp(str, "NO\t", 3))
-				{
-					str += 2;
-					while (ft_isspace(*str))
-						str++;
-					sq->no = ft_substr(str, 0, ft_strlen(str) - 1);
-					if (!isemptyline(sq->no))
-						sq->infonumber++;
-					
-				}
-				else if (!ft_strncmp(str, "WE ", 3) || !ft_strncmp(str, "WE\t", 3))
-				{
-					str += 2;
-					while (ft_isspace(*str))
-						str++;
-					sq->we = ft_substr(str, 0, ft_strlen(str) - 1);
-					if (!isemptyline(sq->we))
-						sq->infonumber++;
-				}
-				else if (!ft_strncmp(str, "EA ", 3) || !ft_strncmp(str, "EA\t", 3))
-				{
-					str += 2;
-					while (ft_isspace(*str))
-						str++;
-					sq->ea = ft_substr(str, 0, ft_strlen(str) - 1);
-					if (!isemptyline(sq->ea))
-						sq->infonumber++;
-				}
-				else if (!ft_strncmp(str, "SO ", 3) || !ft_strncmp(str, "S\t", 3))
-				{
-					str += 2;
-					while (ft_isspace(*str))
-						str++;
-					sq->so = ft_substr(str, 0, ft_strlen(str) - 1);
-					if (!isemptyline(sq->so))
-						sq->infonumber++;
-				}
-				get_free(&sq->gnl);
-			}
-		}
+		if (eat_the_veggies(sq, str, fd, &i))
+			return (1);
 	}
 	return (0);
 }

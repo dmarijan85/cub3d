@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/12 16:23:22 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/13 12:08:14 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,6 @@ void		mapdeluxe(t_square *sq);
 void		check_replace(char *line, int longest, t_square *sq, int pos);
 void		waterbucket(t_square *sq, int x, int y);
 void		array_free(char **str);
+int			eat_the_veggies(t_square *sq, char *str, int fd, int *i);
 
 #endif

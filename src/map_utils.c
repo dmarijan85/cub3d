@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:08:37 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/12 16:24:32 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/13 11:44:43 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	check_replace(char *line, int longest, t_square *sq, int pos)
 			tmp[i] = line[i];
 			i++;
 		}
-while (i < longest)
+		while (i < longest)
 		{
 			tmp[i] = ' ';
 			i++;
