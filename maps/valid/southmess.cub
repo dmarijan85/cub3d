@@ -1,10 +1,10 @@
-NO		 	 	 	 	 		 textures/supernario.png
+NO		 	 	 	 	 		 textures/pizzabricks.png
 
-WE textures/wariowhere.png
+WE textures/pizzacolumn.png
 
-SO textures/fiShy.png
+SO textures/pizzawall.png
 
-EA textures/mr.earnest.png
+EA textures/pizzacube.png
 
 F 220,100,99
 C 250,30,99

@@ -1,10 +1,10 @@
-NO		 	 	 	 	 		 placeholder
+NO		 	 	 	 	 		 textures/pizzabricks.png
 
-WE placeholder2
+WE textures/pizzacolumn.png
 
-SO placeholder3
+SO textures/pizzawall.png
 
-EA placeholder4
+EA textures/pizzacube.png
 
 F 220,100,0
 C 250,30,0
