@@ -1,10 +1,10 @@
-NO		 	 	 	 	 		 textures/supernario.png
+NO		 	 	 	 	 		 textures/fake.png
 
-WE textures/wariowhere.png
+WE textures/bogus.png
 
-SO textures/fiShy.png
+SO textures/fake.png
 
-EA textures/mr.earnest.png
+EA textures/bogus.png
 
 F 130,150,0
 C 25,230,77
