@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:48:33 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/12 15:38:29 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 16:32:27 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	ft_rip_jose_maria_gay_de_liebana(t_square *sq, bool *hookers)
 void	ft_gyat(t_square *sq)
 {
 	mlx_close_window(sq->window);
-	die("Goodbye!\n", sq, 0);
+	die("Goodbye!", sq, 0);
 }
 
 void	hook(void *param)

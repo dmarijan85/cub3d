@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:15 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/12 16:15:01 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 16:32:33 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	array_free(char **str)
 	{
 		while (str[i])
 		{
-			ft_printf("%s\n", str[i]);
 			get_free(&str[i]);
 			i++;
 		}
@@ -31,32 +30,59 @@ void	array_free(char **str)
 	str = NULL;
 }
 
-//errexit
+void	wallbrained(t_square *sq, int wall, char *tmp)
+{
+	if (wall == NORTH && sq->no)
+		free(tmp);
+	else if (wall == SOUTH && sq->so)
+		free(tmp);
+	else if (wall == EAST && sq->ea)
+		free(tmp);
+	else if (wall == WEST && sq->we)
+		free(tmp);
+}
+
+void	puzzlebrained(t_square *sq)
+{
+	if (sq->nwall)
+		mlx_delete_image(sq->window, sq->nwall);
+	if (sq->swall)
+		mlx_delete_image(sq->window, sq->swall);
+	if (sq->ewall)
+		mlx_delete_image(sq->window, sq->ewall);
+	if (sq->wwall)
+		mlx_delete_image(sq->window, sq->wwall);
+	if (sq->floppatron)
+		mlx_delete_image(sq->window, sq->floppatron);
+	if (sq->ntext)
+		mlx_delete_texture(sq->ntext);
+	if (sq->etext)
+		mlx_delete_texture(sq->etext);
+	if (sq->wtext)
+		mlx_delete_texture(sq->wtext);
+	if (sq->stext)
+		mlx_delete_texture(sq->stext);
+	if (sq->gnl)
+		get_free(&sq->gnl);
+}
+
 void	die(char *errmsg, t_square *sq, int fd)
 {
-	int	i;
-
-	i = 0;
 	if (errmsg)
 	{
-		ft_putstr_fd("Error\n", 2);
+		if (ft_strncmp(errmsg, "Goodbye!", 10))
+			ft_putstr_fd("Error\n", 2);
 		ft_putstr_fd(errmsg, 2);
 		ft_putstr_fd("\n", 2);
-	}
-	ft_printf("NO:%s, WE:%s, SO:%s, EA:%s\n", sq->no, sq->we, sq->so, sq->ea);
-	while (i < 3)
-	{
-		ft_printf("CC[%i]:%i, FC[%i]:%i\n", i, sq->cc[i], i, sq->fc[i]);
-		i++;
 	}
 	free(sq->no);
 	free(sq->ea);
 	free(sq->we);
 	free(sq->so);
-	if (sq->gnl)
-		get_free(&sq->gnl);
-	array_free(sq->map);
+		array_free(sq->map);
 	if (fd)
 		close(fd);
+	if (!ft_strncmp(errmsg, "Goodbye!", 10))
+		exit(0);
 	exit(1);
 }

@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:11:02 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/12 16:03:16 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 14:37:36 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	draw_texture(t_square *sq, mlx_image_t *text, int i, mlx_image_t *wall)
 	tex_pos = 0;
 	while (height > 0)
 	{
-		if (y > sq->winheight)
+		if (y >= sq->winheight)
 			break ;
 		tex_y = (int)tex_pos % text->height;
 		tex_pos += y_step;

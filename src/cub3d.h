@@ -6,7 +6,7 @@
 /*   By: dmarijan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:12:00 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/13 12:08:14 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 16:17:46 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_square
 	int				pnbr;
 	float			angle;
 	float			*cone;
+
 	//entire fov walls
 	mlx_image_t		*floppatron;
 
@@ -123,5 +124,6 @@ void		check_replace(char *line, int longest, t_square *sq, int pos);
 void		waterbucket(t_square *sq, int x, int y);
 void		array_free(char **str);
 int			eat_the_veggies(t_square *sq, char *str, int fd, int *i);
+void		wallbrained(t_square *sq, int wall, char *tmp);
 
 #endif

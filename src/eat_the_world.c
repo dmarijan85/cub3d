@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 12:07:21 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/13 12:07:50 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 16:20:30 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,17 @@ void	eat_the_walls(t_square *sq, char *str, int wall)
 	while (ft_isspace(*str))
 		str++;
 	tmp = ft_substr(str, 0, ft_strlen(str) - 1);
-	if (wall == NORTH)
-		sq->no = tmp;
-	else if (wall == SOUTH)
-		sq->so = tmp;
-	else if (wall == EAST)
-		sq->ea = tmp;
-	else if (wall == WEST)
-		sq->we = tmp;
 	if (!isemptyline(tmp))
 		sq->infonumber++;
+	wallbrained(sq, wall, tmp);
+	if (wall == NORTH && !sq->no)
+		sq->no = tmp;
+	else if (wall == SOUTH && !sq->so)
+		sq->so = tmp;
+	else if (wall == EAST && !sq->ea)
+		sq->ea = tmp;
+	else if (wall == WEST && !sq->we)
+		sq->we = tmp;
 }
 
 void	eat_the_world(t_square *sq, char *str, int fd, int *i)
