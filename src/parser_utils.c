@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:11:15 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/19 15:05:20 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 16:36:08 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	legalize_walls(t_square *sq)
 		sq->ewall = mlx_texture_to_image(sq->window, sq->etext);
 		sq->wwall = mlx_texture_to_image(sq->window, sq->wtext);
 		sq->swall = mlx_texture_to_image(sq->window, sq->stext);
-
 	}
 	else
 		die("Mf sent me bogus textures :skull:", sq, 0);

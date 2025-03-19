@@ -6,7 +6,7 @@
 /*   By: dmarijan <dmarijan@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 16:06:15 by dmarijan          #+#    #+#             */
-/*   Updated: 2025/03/19 16:32:33 by dmarijan         ###   LAUSANNE.ch       */
+/*   Updated: 2025/03/19 16:36:37 by dmarijan         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	die(char *errmsg, t_square *sq, int fd)
 	free(sq->ea);
 	free(sq->we);
 	free(sq->so);
-		array_free(sq->map);
+	array_free(sq->map);
 	if (fd)
 		close(fd);
 	if (!ft_strncmp(errmsg, "Goodbye!", 10))
